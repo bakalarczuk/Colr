@@ -1,0 +1,31 @@
+fileFormatVersion: 2
+guid: d5f952de7e21148929de3e730cccff3e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: SF Compact Text
+  fontNames:
+  - SF Compact Text
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c54cd06225b4d4f2da91d219562d9f8f, type: 3}
+  - {fileID: 12800000, guid: 6f4815e519b3241398d2468e2f25e281, type: 3}
+  - {fileID: 12800000, guid: 8c8dba0692cc941948723f71e886a554, type: 3}
+  - {fileID: 12800000, guid: 28d70916765f1474986facca4ca2231e, type: 3}
+  - {fileID: 12800000, guid: 7cade317b32fb48678d991f765f1d9c4, type: 3}
+  - {fileID: 12800000, guid: 64aaf0293a9e543ca96c24c836544c07, type: 3}
+  - {fileID: 12800000, guid: 3cf7d63c4581a414b83a6ab9d59d3464, type: 3}
+  - {fileID: 12800000, guid: 6e06829de05554e71a47b9ca6dd15ee7, type: 3}
+  - {fileID: 12800000, guid: a38e903e740cf47d2a68f78dfb1e10db, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

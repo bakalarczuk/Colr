@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: d66b2b91b3f9ff742af4cb94e68e322e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Mosk
+  fontNames:
+  - Mosk
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1ca4f72078d448b4c96a02ae4e994618, type: 3}
+  - {fileID: 12800000, guid: 95cceed0a59359c4295ddcd78ad94095, type: 3}
+  - {fileID: 12800000, guid: 3c2fe3d416e8ff14b9f3e8f764f278e6, type: 3}
+  - {fileID: 12800000, guid: 47b372f46ba5d7347af28fa92f0269a1, type: 3}
+  - {fileID: 12800000, guid: 8b1eab98486ca474db30c107789a4497, type: 3}
+  - {fileID: 12800000, guid: 9dc1934b31e1db74698f383532013071, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: attentionfish
+  assetBundleVariant: 

@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 5025a0db29266c14ca8b868b05673239
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Mosk Normal 400
+  fontNames:
+  - Mosk Normal 400
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: attentionfish
+  assetBundleVariant: 

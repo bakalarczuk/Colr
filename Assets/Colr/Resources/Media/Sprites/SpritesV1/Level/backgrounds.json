@@ -1,0 +1,50 @@
+{
+"frames": {
+	"coral-1.png": {
+		"frame": {"x":0, "y":1211, "w":280, "h":277},
+		"spriteSourceSize": {"x":0,"y":0,"w":280,"h":277},
+		"sourceSize": {"w":280,"h":277}
+	},
+	"coral-2.png": {
+		"frame": {"x":546, "y":961, "w":231, "h":458},
+		"spriteSourceSize": {"x":0,"y":0,"w":231,"h":458},
+		"sourceSize": {"w":231,"h":458}
+	},
+	"fishtank-background.png": {
+		"frame": {"x":541, "y":0, "w":540, "h":960},
+		"spriteSourceSize": {"x":0,"y":0,"w":540,"h":960},
+		"sourceSize": {"w":540,"h":960}
+	},
+	"fishtank-sign-start-normal-state.png": {
+		"frame": {"x":0, "y":1086, "w":284, "h":124},
+		"spriteSourceSize": {"x":0,"y":0,"w":284,"h":124},
+		"sourceSize": {"w":284,"h":124}
+	},
+	"fishtank-sign-start-pressed-state.png": {
+		"frame": {"x":0, "y":961, "w":284, "h":124},
+		"spriteSourceSize": {"x":0,"y":0,"w":284,"h":124},
+		"sourceSize": {"w":284,"h":124}
+	},
+	"fishtank-sign.png": {
+		"frame": {"x":281, "y":1211, "w":264, "h":180},
+		"spriteSourceSize": {"x":0,"y":0,"w":264,"h":180},
+		"sourceSize": {"w":264,"h":180}
+	},
+	"riff-bottom.png": {
+		"frame": {"x":1082, "y":0, "w":540, "h":960},
+		"spriteSourceSize": {"x":0,"y":0,"w":540,"h":960},
+		"sourceSize": {"w":540,"h":960}
+	},
+	"window-v2.png": {
+		"frame": {"x":0, "y":0, "w":540, "h":960},
+		"spriteSourceSize": {"x":0,"y":0,"w":540,"h":960},
+		"sourceSize": {"w":540,"h":960}
+	}
+
+},
+"meta": {
+	"image": "backgrounds.png",
+	"size": {"w": 1623, "h": 1489},
+	"scale": "1"
+}
+}
