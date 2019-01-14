@@ -6,7 +6,7 @@ using Habtic.Managers;
 
 namespace Habtic.Games.Colr
 {
-    public class Fish : MonoBehaviour
+    public class Color : MonoBehaviour
     {
         #region Variables and Properties
 

@@ -6,7 +6,7 @@ using Habtic.Managers;
 
 namespace Habtic.Games.Colr
 {
-    public class FishSchool : MonoBehaviour
+    public class ColorWheel : MonoBehaviour
     {
         #region Variables and Properties
 
