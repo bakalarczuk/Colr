@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Habtic.Managers;
+using TMPro;
 
 namespace Habtic.Games.Colr
 {
@@ -10,14 +11,11 @@ namespace Habtic.Games.Colr
     {
         #region Variables and Properties
 
-        public delegate void FishesMovedOut();
-        public static event FishesMovedOut OnFishesMovedOut;
+		[SerializeField]
+		private WheelColor[] _colorPrefabs;
 
-        [SerializeField]
-        private GameObject[] _fishPrefabs;
-
-        private Sprite _defaultFishSprite;
-        private Sprite _highLightedFishSprite;
+		[SerializeField]
+		public TMP_Text _colorText;
 
         private SwipeDirection _movingDirection;
 
@@ -30,15 +28,20 @@ namespace Habtic.Games.Colr
             }
         }
 
-        [SerializeField]
-        private Fish[] _fishes;
+		[SerializeField]
+		private ColrColor[] _colors; //= new ColrColor[];
 
-        private Vector2 _centreOffset = new Vector2(156, 156);
+		[SerializeField]
+		private ColrColor[] _generatedColors;
 
-        private Level _level;
+		[SerializeField]
+		private ColrColor[] _unusedColors;
+ 
+		public ColrColor _properColor;	
 
+		private Level _level;
 
-        private LTDescr _tweenM;
+		private LTDescr _tweenM;
 
         #endregion
         #region Unity Methods
@@ -48,11 +51,13 @@ namespace Habtic.Games.Colr
             _level = Level.Instance;
         }
 
-        #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
 
-        public void Cleanupfishes()
+		public WheelColor[] ColorPrefabs{ get { return _colorPrefabs; } }
+
+		public void Cleanupfishes()
         {
 
         }
@@ -75,69 +80,8 @@ namespace Habtic.Games.Colr
 
         }
 
-        public bool IsMovin()
-        {
-            Fish f = GrabExistingFish();
 
-            if (f == null) return false;
-
-            return f.IsMoving();
-        }
-
-        private Fish GrabFreeFish()
-        {
-            for (int i = 0; i < _fishes.Length; i++)
-            {
-                Fish f = _fishes[i];
-                if (f.FreeFish())
-                {
-                    return f;
-                }
-            }
-            return null;
-        }
-
-        private Fish GrabExistingFish()
-        {
-            for (int i = 0; i < _fishes.Length; i++)
-            {
-                Fish f = _fishes[i];
-                if (!f.FreeFish())
-                {
-                    return f;
-                }
-            }
-            return null;
-        }
-
-        public Fish GrabCentralFish()
-        {
-            for (int i = 0; i < _fishes.Length; i++)
-            {
-                Fish f = _fishes[i];
-                if (f.GetFishCoordinates() == Vector2.zero)
-                {
-                    return f;
-                }
-            }
-            return null;
-        }
-
-        public bool AreAllFishesOffScreen()
-        {
-            bool reply = true;
-            for (int i = 0; i < _fishes.Length; i++)
-            {
-                Fish f = _fishes[i];
-                if (!f.IsFishVisible())
-                {
-                    reply = false;
-                }
-            }
-            return reply;
-        }
-
-        private void MoveSchoolOut(float _movingTime = 5f)
+        private void MoveWheelOut(float _movingTime = 5f)
         {
             if (_tweenM != null)
             {
@@ -157,10 +101,10 @@ namespace Habtic.Games.Colr
                 MovingDirection = SwipeDirection.Left;
             }
 
-            MoveSchoolOutTo(MovingDirection, _movingTime);
+			MoveWheelOutTo(MovingDirection, _movingTime);
         }
 
-        public void MoveSchoolOutTo(SwipeDirection _movingDirection, float _movingTime = 5f)
+        public void MoveWheelOutTo(SwipeDirection _movingDirection, float _movingTime = 5f)
         {
             float _schoolMovingTime = _movingTime;
             float _moveTo = 0f;
@@ -177,146 +121,58 @@ namespace Habtic.Games.Colr
 
                     break;
             }
-
-            LeanTween.moveLocalX(gameObject, 0f, 1f)
-            .setOnComplete(() =>
-            {
-                _tweenM = LeanTween.moveLocalX(gameObject, _moveTo, _schoolMovingTime)
-                    .setEase(LeanTweenType.linear)
-                    .setOnComplete(() =>
-                    {
-                        if (OnFishesMovedOut != null)
-                        {
-                            OnFishesMovedOut();
-                        }
-                    });
-            });
         }
 
         public void StartNewLevel(int levelNR)
         {
             ComeIn();
-
-            // Set movement
-            if (_level.DirAndMove > 0)
-            {
-                MoveSchoolOut(_level.MovingOutTime);
-            }
-
-            // Set other fishes
-            for (int i = 0; i < _fishes.Length; i++)
-            {
-                Fish f = _fishes[i];
-                Vector2 _fishCoordinates = f.GetFishCoordinates();
-                f.SetFishVisible(false);
-                if (
-                        (_fishCoordinates.x >= -(_level.HorFishes)
-                        && _fishCoordinates.x <= (_level.HorFishes)
-                        && _fishCoordinates.y == 0
-                        && _fishCoordinates.x != 0)
-                            ||
-                        (_fishCoordinates.y >= -(_level.VerFishes)
-                        && _fishCoordinates.y <= (_level.VerFishes)
-                        && _fishCoordinates.x == 0
-                        && _fishCoordinates.y != 0)
-                    )
-                {
-                    if (_level.RandomFish == 1)
-                    {
-                        f.SetRandomSprite();
-                    }
-                    f.ResetFishDirection();
-                    f.SetFishVisible(true);
-                    f.ComeIn();
-                }
-
-            }
-
-            // Set central Fish
-            Fish fish = GrabCentralFish();
-            if (_level.RandomCentralFish == 1)
-            {
-                fish.SetRandomSprite();
-            }
-            fish.ResetFishDirection();
-            fish.SetFishVisible(true);
-            fish.ComeIn();
-
+			SelectColors();
         }
 
         public void StartTutorialOne(int levelNR)
         {
             ComeIn();
-
-            // Set other fishes
-            for (int i = 0; i < _fishes.Length; i++)
-            {
-                Fish f = _fishes[i];
-                f.SetFishVisible(false);
-                Vector2 _fishCoordinates = f.GetFishCoordinates();
-                if (
-                        (_fishCoordinates.x >= -(_level.HorFishes)
-                        && _fishCoordinates.x <= (_level.HorFishes)
-                        && _fishCoordinates.y == 0
-                        && _fishCoordinates.x != 0)
-                            ||
-                        (_fishCoordinates.y >= -(_level.VerFishes)
-                        && _fishCoordinates.y <= (_level.VerFishes)
-                        && _fishCoordinates.x == 0
-                        && _fishCoordinates.y != 0)
-                    )
-                {
-                    f.ResetFishDirection();
-                    f.SetFishVisible(true);
-                    f.ComeIn();
-                }
-            }
-
-            // Set central Fish
-            Fish fish = GrabCentralFish();
-            fish.SetFishDirection(SwipeDirection.Up);
-            fish.SetFishVisible(true);
-            fish.ComeIn();
         }
 
         public void StartTutorialTwo(int levelNR)
         {
             ComeIn();
-
-            // Set movement
-            MovingDirection = SwipeDirection.Right;
-            MoveSchoolOutTo(MovingDirection, 10f);
-
-            // Set other fishes
-            for (int i = 0; i < _fishes.Length; i++)
-            {
-                Fish f = _fishes[i];
-                Vector2 _fishCoordinates = f.GetFishCoordinates();
-                if (
-                        (_fishCoordinates.x >= -(_level.HorFishes)
-                        && _fishCoordinates.x <= (_level.HorFishes)
-                        && _fishCoordinates.y == 0
-                        && _fishCoordinates.x != 0)
-                            ||
-                        (_fishCoordinates.y >= -(_level.VerFishes)
-                        && _fishCoordinates.y <= (_level.VerFishes)
-                        && _fishCoordinates.x == 0
-                        && _fishCoordinates.y != 0)
-                    )
-                {
-                    f.ResetFishDirection();
-                    f.SetFishVisible(true);
-                    f.ComeIn();
-                }
-            }
-
-            // Set central Fish
-            Fish fish = GrabCentralFish();
-            fish.SetFishDirection(SwipeDirection.Down);
-            fish.SetFishVisible(true);
-            fish.ComeIn();
         }
 
-        #endregion
-    }
+		public void SelectColors()
+		{
+			ColrColor[] myColors = new ColrColor[3];
+			List<ColrColor> unusedColors = new List<ColrColor>(_colors);
+			List<int> myNumbers = new List<int>();
+			System.Random randNum = new System.Random();
+			for (int currIndex = 0; currIndex < 3; currIndex++)
+			{
+				// generate a candidate
+				int randCandidate = randNum.Next(0, _colors.Length);
+
+				// generate a new candidate as long as we don't get one that isn't in the array
+				while (myNumbers.Contains(randCandidate))
+				{
+					randCandidate = randNum.Next(0, _colors.Length);
+				}
+
+				myNumbers.Add(randCandidate);
+				unusedColors.Remove(_colors[randCandidate]);
+				myColors[currIndex] = _colors[randCandidate];
+			}
+
+			_generatedColors = myColors;
+			_unusedColors = unusedColors.ToArray();
+			for (int i = 0; i < _colorPrefabs.Length; i++)
+			{
+				_colorPrefabs[i].SetColor(ColrColor.ColourValue(_generatedColors[i].colorName), _generatedColors[i]);
+			}
+
+			int properColorIndex = Random.Range(0, _generatedColors.Length);
+			_colorText.text = _generatedColors[properColorIndex].colorName.ToString();
+			_properColor = _generatedColors[properColorIndex];
+		}
+
+		#endregion
+	}
 }

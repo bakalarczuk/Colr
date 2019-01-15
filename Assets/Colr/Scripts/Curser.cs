@@ -3,31 +3,27 @@ using System.Collections.Generic;
 using Habtic.Managers;
 using UnityEngine;
 
-public class CurserParticle : MonoBehaviour
+public class Curser : MonoBehaviour
 {
 
     public Camera cam;
-    private bool dragging = false;
-
-    private ParticleSystem myParticle;
+    private bool touching = false;
 
     void OnEnable()
     {
-        myParticle = this.gameObject.GetComponent<ParticleSystem>();
-        InputManager.Instance.OnTouchDown += ParticlesOnTouchDown;
-        InputManager.Instance.OnTouchUp += ParticlesOnTouchUp;
-        myParticle.Stop();
+        InputManager.Instance.OnTouchDown += OnTouchDown;
+        InputManager.Instance.OnTouchUp += OnTouchUp;
     }
 
     void OnDisable()
     {
-        InputManager.Instance.OnTouchDown -= ParticlesOnTouchDown;
-        InputManager.Instance.OnTouchUp -= ParticlesOnTouchUp;
+        InputManager.Instance.OnTouchDown -= OnTouchDown;
+        InputManager.Instance.OnTouchUp -= OnTouchUp;
     }
 
     void Update()
     {
-        if (dragging)
+        if (touching)
         {
             if (Input.touchCount > 0)
             {
@@ -43,15 +39,13 @@ public class CurserParticle : MonoBehaviour
         }
     }
 
-    private void ParticlesOnTouchDown(YTouchEventArgs touchEventArgs)
+    private void OnTouchDown(YTouchEventArgs touchEventArgs)
     {
-        dragging = true;
-		myParticle.Play();
+		touching = true;
     }
 
-    private void ParticlesOnTouchUp(YTouchEventArgs touchEventArgs)
+    private void OnTouchUp(YTouchEventArgs touchEventArgs)
     {
-        myParticle.Stop();
-        dragging = false;
+		touching = false;
     }
 }

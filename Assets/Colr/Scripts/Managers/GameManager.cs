@@ -66,13 +66,13 @@ namespace Habtic.Games.Colr
         private GameObject _selected;
 
         [SerializeField]
-        private FishSchool _fishSchool;
+        private ColorWheel _colorWheel;
         [SerializeField]
         private LevelQuestion _questionPanel;
         [SerializeField]
-        private Timer _timer;
+        private Timer _timer;					
 
-        public bool Paused
+		public bool Paused
         {
             get
             {
@@ -146,7 +146,6 @@ namespace Habtic.Games.Colr
 
         void Start()
         {
-            InputManager.Instance.OnSwiped += OnSwipedCheck;
         }
 
         void OnEnable()
@@ -170,7 +169,6 @@ namespace Habtic.Games.Colr
 
         void OnDestroy()
         {
-            InputManager.Instance.OnSwiped -= OnSwipedCheck;
         }
 
         private void InitLevelStateChanged(LevelStates levelState)
@@ -196,14 +194,14 @@ namespace Habtic.Games.Colr
                     {
                         OnInputChecked();
                     }
-                    OnCorrectSwipe();
+                    OnCorrectTouch();
                     break;
                 case LevelStates.IncorrectInput:
                     if (OnInputChecked != null)
                     {
                         OnInputChecked();
                     }
-                    OnIncorrectSwipe();
+                    OnIncorrectTouch();
                     break;
                 case LevelStates.pause:
                     Pause();
@@ -227,21 +225,9 @@ namespace Habtic.Games.Colr
 
         private void LevelStart()
         {
-            if (_level.DirAndMove > 0)
-            {
-                FishSchool.OnFishesMovedOut += OnFishesMovedOutBeforeSwipe;
-                OnInputChecked += OnFishesMoveSwipDetected;
-
-                _level.CurrentDirOrMove = HelperMethods.CoinFlip();
-            }
-            else
-            {
-                _level.CurrentDirOrMove = false;
-            }
-
             _questionPanel.SetQuestionText(_level.CurrentDirOrMove);
 
-            _fishSchool.StartNewLevel(_level.CurrentLevel);
+            _colorWheel.StartNewLevel(_level.CurrentLevel);
         }
 
         private void OnSwipedCheck(YTouchEventArgs touchEventArgs)
@@ -252,7 +238,7 @@ namespace Habtic.Games.Colr
                 {
                     Vector2 _fishSchoolDirection = Vector2.zero;
 
-                    switch (_fishSchool.MovingDirection)
+                    switch (_colorWheel.MovingDirection)
                     {
                         case SwipeDirection.Down:
                             _fishSchoolDirection = new Vector2(0, -1);
@@ -279,45 +265,45 @@ namespace Habtic.Games.Colr
                         LevelState = LevelStates.IncorrectInput;
                     }
                 }
-                else
-                {
-                    Fish _f = _fishSchool.GrabCentralFish();
+                //else
+                //{
+                //    WheelColor _f = _colorWheel.GrabCentralFish();
 
-                    Vector2 _fishDirection = Vector2.zero;
+                //    Vector2 _fishDirection = Vector2.zero;
 
-                    switch (_f.StartDirection)
-                    {
-                        case SwipeDirection.Down:
-                            _fishDirection = new Vector2(0, -1);
-                            break;
-                        case SwipeDirection.Left:
-                            _fishDirection = new Vector2(-1, 0);
-                            break;
-                        case SwipeDirection.Right:
-                            _fishDirection = new Vector2(1, 0);
-                            break;
-                        case SwipeDirection.Up:
-                            _fishDirection = new Vector2(0, 1);
-                            break;
-                        default:
-                            break;
-                    }
+                //    switch (_f.StartDirection)
+                //    {
+                //        case SwipeDirection.Down:
+                //            _fishDirection = new Vector2(0, -1);
+                //            break;
+                //        case SwipeDirection.Left:
+                //            _fishDirection = new Vector2(-1, 0);
+                //            break;
+                //        case SwipeDirection.Right:
+                //            _fishDirection = new Vector2(1, 0);
+                //            break;
+                //        case SwipeDirection.Up:
+                //            _fishDirection = new Vector2(0, 1);
+                //            break;
+                //        default:
+                //            break;
+                //    }
 
-                    if (_fishDirection == touchEventArgs.SwipeDirection)
-                    {
-                        LevelState = LevelStates.correctInput;
-                    }
-                    else
-                    {
-                        LevelState = LevelStates.IncorrectInput;
-                    }
-                }
+                //    if (_fishDirection == touchEventArgs.SwipeDirection)
+                //    {
+                //        LevelState = LevelStates.correctInput;
+                //    }
+                //    else
+                //    {
+                //        LevelState = LevelStates.IncorrectInput;
+                //    }
+                //}
             }
         }
 
-        private void OnCorrectSwipe()
+        private void OnCorrectTouch()
         {
-            Debug.Log("Correct swipe detected");
+            Debug.Log("Correct touch detected");
             if (OnCorrectInput != null)
             {
                 OnCorrectInput();
@@ -332,9 +318,9 @@ namespace Habtic.Games.Colr
             }
         }
 
-        private void OnIncorrectSwipe()
+        private void OnIncorrectTouch()
         {
-            Debug.Log("Incorrect swipe detected");
+            Debug.Log("Incorrect touch detected");
             if (OnIncorrectInput != null)
             {
                 OnIncorrectInput();
@@ -343,7 +329,7 @@ namespace Habtic.Games.Colr
             _level.CorrectCounter = 0;
             if (Lifes > 0)
             {
-                _fishSchool.StartNewLevel(_level.CurrentLevel);
+                _colorWheel.StartNewLevel(_level.CurrentLevel);
                 LevelState = LevelStates.play;
             }
         }
@@ -414,21 +400,6 @@ namespace Habtic.Games.Colr
         {
             LevelState = LevelStates.gameOver;
         }
-
-        private void OnFishesMovedOutBeforeSwipe()
-        {
-            FishSchool.OnFishesMovedOut -= OnFishesMovedOutBeforeSwipe;
-            OnInputChecked -= OnFishesMoveSwipDetected;
-            LevelState = LevelStates.IncorrectInput;
-        }
-
-        private void OnFishesMoveSwipDetected()
-        {
-            OnInputChecked -= OnFishesMoveSwipDetected;
-            FishSchool.OnFishesMovedOut -= OnFishesMovedOutBeforeSwipe;
-        }
-
-
     }
 
     public class NextLevelEventArgs : EventArgs

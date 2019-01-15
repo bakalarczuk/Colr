@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Habtic.Managers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Habtic.Games.Colr
 {
@@ -66,18 +67,15 @@ namespace Habtic.Games.Colr
         public Button menuButton;
         private GameObject _selected;
 
-        // [SerializeField]
-        // private FishSchool _fishSchool;
-        [SerializeField]
+		[SerializeField]
+		private ColorWheel _colorWheel;
+		[SerializeField]
         private IntroLevelQuestion _questionPanel;
         [SerializeField]
         private Timer _timer;
 
         [SerializeField]
         private MessagePanelIntro _introEndMassagePanel;
-
-        [SerializeField]
-        private TutorialSwipeIndicator _swipeIndicator;
 
         public bool Paused
         {
@@ -235,58 +233,45 @@ namespace Habtic.Games.Colr
 
         public void StartTutorialOne()
         {
-            InputManager.Instance.OnSwiped += OnSwipeCheckTutorialOne;
-            _level.CurrentDirOrMove = false;
-
+			InputManager.Instance.OnTouchDown += OnTouchDownTutorialOne;
             _questionPanel.SetQuestionText(TutorialOne);
-
-            _swipeIndicator.SwipeDownUp();
+			_colorWheel.SelectColors();
         }
 
-        private void OnSwipeCheckTutorialOne(YTouchEventArgs touchEventArgs)
+		private void OnTouchDownTutorialOne(YTouchEventArgs touchEventArgs)
+		{
+			if (LevelState == LevelStates.play || LevelState == LevelStates.resume)
+			{
+				if (CheckColorMatchAtPosition(touchEventArgs))
+				{
+					InputManager.Instance.OnSwiped -= OnTouchDownTutorialOne;
+					StartTutorialTwo();
+
+				}
+			}
+		}
+
+		private void StartTutorialTwo()
         {
-            if (LevelState == LevelStates.play || LevelState == LevelStates.resume)
-            {
-                 Vector2 _swipeDirection = new Vector2(0, 1);
+			InputManager.Instance.OnTouchDown += OnTouchDownTutorialTwo;
+			_questionPanel.SetQuestionText(TutorialTwo);
+			_colorWheel.SelectColors();
+		}			
 
-                if (_swipeDirection == touchEventArgs.SwipeDirection)
-                {
-                    _swipeIndicator.StopSwipeTween();
-                    InputManager.Instance.OnSwiped -= OnSwipeCheckTutorialOne;
-                    StartTutorialTwo();
-                }
-            }
-        }
+		private void OnTouchDownTutorialTwo(YTouchEventArgs touchEventArgs)
+		{
+			if (LevelState == LevelStates.play || LevelState == LevelStates.resume)
+			{
+				if (CheckColorMatchAtPosition(touchEventArgs))
+				{
+					InputManager.Instance.OnSwiped -= OnTouchDownTutorialTwo;
+					StartTutorialThree();	
+				}
+			}
+		}
 
-        private void StartTutorialTwo()
+		private void StartTutorialThree()
         {
-            InputManager.Instance.OnSwiped += OnSwipeCheckTutorialTwo;
-            FishSchool.OnFishesMovedOut += StartTutorialTwo;
-            _level.CurrentDirOrMove = true;
-            _questionPanel.SetQuestionText(TutorialTwo);
-            _swipeIndicator.SwipeLeftRight();
-        }
-
-        private void OnSwipeCheckTutorialTwo(YTouchEventArgs touchEventArgs)
-        {
-            if (LevelState == LevelStates.play || LevelState == LevelStates.resume)
-            {
-                 Vector2 _swipeDirection = new Vector2(1, 0);
-
-                if (_swipeDirection == touchEventArgs.SwipeDirection)
-                {
-                    _swipeIndicator.StopSwipeTween();
-                    InputManager.Instance.OnSwiped -= OnSwipeCheckTutorialTwo;
-                    StartTutorialThree();
-                }
-            }
-        }
-
-        private void StartTutorialThree()
-        {
-            _swipeIndicator.StopSwipeTween();
-            _level.CurrentDirOrMove = true;
-
             _introEndMassagePanel.Show();
         }
 
@@ -303,17 +288,23 @@ namespace Habtic.Games.Colr
             LeanTween.resumeAll();
         }
 
-        private void OnFishesMovedOutBeforeSwipe()
-        {
-            FishSchool.OnFishesMovedOut -= OnFishesMovedOutBeforeSwipe;
-            OnInputChecked -= OnFishesMoveSwipDetected;
-            LevelState = LevelStates.IncorrectInput;
-        }
-
-        private void OnFishesMoveSwipDetected()
-        {
-            OnInputChecked -= OnFishesMoveSwipDetected;
-            FishSchool.OnFishesMovedOut -= OnFishesMovedOutBeforeSwipe;
-        }
+		private bool CheckColorMatchAtPosition(YTouchEventArgs touchEventArgs)
+		{
+			PointerEventData pointerData = new PointerEventData(EventSystem.current);
+			pointerData.position = touchEventArgs.TouchStart;
+			List<RaycastResult> results = new List<RaycastResult>();
+			EventSystem.current.RaycastAll(pointerData, results);
+			if (results.Count > 0)
+			{
+				for (int i = 0; i < _colorWheel.ColorPrefabs.Length; i++)
+				{
+					RaycastResult result = results.Find(r => r.gameObject.GetComponent<WheelColor>() == _colorWheel.ColorPrefabs[i]);
+					if (result.gameObject != null)
+						if (result.gameObject.GetComponent<WheelColor>().GetColor.Equals(_colorWheel._properColor))
+							return true;
+				}
+			}
+			return false;
+		}
     }
 }

@@ -9,7 +9,7 @@ namespace Habtic.Games.Colr
         [SerializeField]
         private Game _game;
         public TMP_Text ScoreText, messageText, levelText;
-        public Color StarColor;
+        public WheelColor StarColor;
         public Image[] Stars;
 
         private GameManager _gameManager;

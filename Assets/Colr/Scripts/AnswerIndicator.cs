@@ -18,7 +18,6 @@ namespace Habtic.Games.Colr
             GameManager.OnLevelStateChanged += ShowAnswerIndicator;
             GameManager.OnCorrectInput += ShowCorrectIndicator;
             GameManager.OnIncorrectInput += ShowIncorrectIndicator;
-            FishSchool.OnFishesMovedOut += ShowIncorrectIndicator;
             _correctIndicator.transform.localScale = Vector3.zero;
             _incorrectIndicator.transform.localScale = Vector3.zero;
         }
