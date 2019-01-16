@@ -12,31 +12,43 @@ namespace Habtic.Games.Colr
 	{
 		public enum ColorNames
 		{
-			Lime,
+			Red,
+			Orange,
+			Yellow,
+			Olive,
 			Green,
+			Purple,
+			Fuchsia,
+			Lime,
 			Aqua,
 			Blue,
 			Navy,
-			Purple,
-			Pink,
-			Red,
-			Orange,
-			Yellow
+			Black,
+			Gray,
+			Silver,
+			White,
+			Pink
 		}
 
 		public ColorNames colorName;
 
 		private static Hashtable colourValues = new Hashtable{
-		 { ColorNames.Lime,     new Color32( 166 , 254 , 0, 255 ) },
-		 { ColorNames.Green,     new Color32( 0 , 254 , 111, 255 ) },
-		 { ColorNames.Aqua,     new Color32( 0 , 201 , 254, 255 ) },
-		 { ColorNames.Blue,     new Color32( 0 , 122 , 254, 255 ) },
-		 { ColorNames.Navy,     new Color32( 60 , 0 , 254, 255 ) },
-		 { ColorNames.Purple, new Color32( 143 , 0 , 254, 255 ) },
-		 { ColorNames.Pink,     new Color32( 232 , 0 , 254, 255 ) },
-		 { ColorNames.Red,     new Color32( 254 , 9 , 0, 255 ) },
-		 { ColorNames.Orange, new Color32( 254 , 161 , 0, 255 ) },
-		 { ColorNames.Yellow, new Color32( 254 , 224 , 0,255 ) },
+		 { ColorNames.Red,		new Color32( 255, 0, 0, 255 ) },
+		 { ColorNames.Orange,	new Color32( 255, 165, 0, 255 ) },
+		 { ColorNames.Yellow,	new Color32( 255, 255, 0, 255 ) },
+		 { ColorNames.Olive,	new Color32( 128, 128, 0, 255 ) },
+		 { ColorNames.Green,	new Color32( 0, 128, 0, 255 ) },
+		 { ColorNames.Purple, 	new Color32( 128, 0, 128, 255 ) },
+		 { ColorNames.Fuchsia, 	new Color32( 255, 0, 255, 255 ) },
+		 { ColorNames.Lime,		new Color32( 0, 255, 0, 255 ) },
+		 { ColorNames.Aqua,		new Color32( 0, 255, 255, 255 ) },
+		 { ColorNames.Blue,		new Color32( 0, 0, 255, 255 ) },
+		 { ColorNames.Navy,		new Color32( 0, 0, 128, 255 ) },
+		 { ColorNames.Black,	new Color32( 0, 0, 0, 255 ) },
+		 { ColorNames.Gray,		new Color32( 128, 128, 128, 255 ) },
+		 { ColorNames.Silver,	new Color32( 192, 192, 192, 255 ) },
+		 { ColorNames.White,	new Color32( 255, 255, 255, 255 ) },
+		 { ColorNames.Pink,		new Color32( 255, 105, 180, 255 ) }
 	 };
 
 		public static Color32 ColourValue(ColorNames color)

@@ -17,17 +17,6 @@ namespace Habtic.Games.Colr
 		[SerializeField]
 		public TMP_Text _colorText;
 
-        private SwipeDirection _movingDirection;
-
-        public SwipeDirection MovingDirection
-        {
-            get { return _movingDirection; }
-            private set
-            {
-                _movingDirection = value;
-            }
-        }
-
 		[SerializeField]
 		private ColrColor[] _colors; //= new ColrColor[];
 
@@ -75,58 +64,10 @@ namespace Habtic.Games.Colr
             transform.localPosition = Vector3.zero;
         }
 
-        public void SnapOut()
-        {
-
-        }
-
-
-        private void MoveWheelOut(float _movingTime = 5f)
-        {
-            if (_tweenM != null)
-            {
-                if (LeanTween.isTweening(_tweenM.id))
-                {
-                    LeanTween.cancel(_tweenM.id);
-                }
-            }
-
-            bool leftOrRightDirection = HelperMethods.CoinFlip();
-            if (leftOrRightDirection)
-            {
-                MovingDirection = SwipeDirection.Right;
-            }
-            else
-            {
-                MovingDirection = SwipeDirection.Left;
-            }
-
-			MoveWheelOutTo(MovingDirection, _movingTime);
-        }
-
-        public void MoveWheelOutTo(SwipeDirection _movingDirection, float _movingTime = 5f)
-        {
-            float _schoolMovingTime = _movingTime;
-            float _moveTo = 0f;
-
-            switch (_movingDirection)
-            {
-                case SwipeDirection.Left:
-                    _moveTo = -Screen.width * 1f;
-                    break;
-                case SwipeDirection.Right:
-                    _moveTo = Screen.width * 1f;
-                    break;
-                default:
-
-                    break;
-            }
-        }
-
         public void StartNewLevel(int levelNR)
         {
             ComeIn();
-			SelectColors();
+			SelectColors(1);
         }
 
         public void StartTutorialOne(int levelNR)
@@ -139,7 +80,7 @@ namespace Habtic.Games.Colr
             ComeIn();
         }
 
-		public void SelectColors()
+		public void SelectColors(int difficultyLevel)
 		{
 			ColrColor[] myColors = new ColrColor[3];
 			List<ColrColor> unusedColors = new List<ColrColor>(_colors);
@@ -169,8 +110,68 @@ namespace Habtic.Games.Colr
 			}
 
 			int properColorIndex = Random.Range(0, _generatedColors.Length);
-			_colorText.text = _generatedColors[properColorIndex].colorName.ToString();
+			_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
 			_properColor = _generatedColors[properColorIndex];
+
+			if(difficultyLevel >= 0 && difficultyLevel < 5)
+			{
+				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+			}
+		}
+
+
+		public void SelectIntroColors(int type)
+		{
+			ColrColor[] myColors = new ColrColor[3];
+			List<ColrColor> unusedColors = new List<ColrColor>(_colors);
+			List<int> myNumbers = new List<int>();
+			System.Random randNum = new System.Random();
+			for (int currIndex = 0; currIndex < 3; currIndex++)
+			{
+				// generate a candidate
+				int randCandidate = randNum.Next(0, _colors.Length);
+
+				// generate a new candidate as long as we don't get one that isn't in the array
+				while (myNumbers.Contains(randCandidate))
+				{
+					randCandidate = randNum.Next(0, _colors.Length);
+				}
+
+				myNumbers.Add(randCandidate);
+				unusedColors.Remove(_colors[randCandidate]);
+				myColors[currIndex] = _colors[randCandidate];
+			}
+
+			_generatedColors = myColors;
+			_unusedColors = unusedColors.ToArray();
+			for (int i = 0; i < _colorPrefabs.Length; i++)
+			{
+				_colorPrefabs[i].SetColor(ColrColor.ColourValue(_generatedColors[i].colorName), _generatedColors[i]);
+			}
+
+			int properColorIndex = Random.Range(0, _generatedColors.Length);
+			_properColor = _generatedColors[properColorIndex];
+
+			if (type == 1)
+			{
+				_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
+				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+			}
+			if (type == 2)
+			{
+				_colorText.text = WordDictionary.Instance.GetShortWord();
+				_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+			}
+			if (type == 3)
+			{
+				_colorText.text = WordDictionary.Instance.GetLongWord();
+				_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+			}
+			if (type == 4)
+			{
+				_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
+				_colorText.color = ColrColor.ColourValue(_unusedColors[Random.Range(0, _unusedColors.Length)].colorName);
+			}
 		}
 
 		#endregion

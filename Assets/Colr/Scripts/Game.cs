@@ -10,15 +10,20 @@ namespace Habtic.Games.Colr
 
         public override Dictionary<string, string> LocalizedStrings { get; set; } = new Dictionary<string, string>()
             {
-                {"game_introlevel_text_tutorialone","Swipe up to get to second tutorial pane" },
-                {"game_introlevel_text_tutorialtwo","Swipe right to end tutorial" },
+                {"game_introlevel_text_tutorialone","Select color <color=\"red\">is written</color> in the center of color wheel" },
+                {"game_introlevel_text_tutorialtwo","Select <color=\"red\">text color</color> written in the center of color wheel" },
+                {"game_introlevel_text_tutorialthree","Select <color=\"red\">text color</color> written in the center of color wheel" },
+                {"game_introlevel_text_tutorialfour","Select <color=\"red\">text color</color> written in the center of color wheel" },
                 {"game_flash_text_level", "LEVEL"},
                 {"game_scoremenu_text_messagenewhighscore", "NEW HIGHSCORE!"},
                 {"game_level_text_questionfacing", "Swipe in the direction the central fish is <color=\"red\">facing</color>"},
                 {"game_level_text_questionmoving", "Swipe in the direction the central fish is <color=\"red\">moving</color>"},
                 {"game_mainmenu_buttontext_startgame", "START GAME" },
                 {"game_mainmenu_buttontext_starttutorial", "PLAY TUTORIAL" },
-            };
+                {"game_notify_time_out", "Time out" },
+                {"game_notify_wrong_answer", "Wrong answer" },
+                {"game_notify_good", "Good answer" },
+			};
 
         private void Start()
         {

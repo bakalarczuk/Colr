@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace Habtic.Games.Colr
 {
@@ -11,13 +12,11 @@ namespace Habtic.Games.Colr
     {
 
         private float _secondsLeft;
-        public TMP_Text TimeText;
-        private int _seconds = 59;
-        private int _minutes = 1;
+        public Image timerIndicator;
         public event TimerEventHandler TimerFinished;
         // public event TimerEventHandler TimerStopped;
 
-        public bool Running { get; private set; }
+        public bool Running { get; set; }
         public float ElapsedTime { get; private set; }
         public float Duration { get; private set; }
 
@@ -33,7 +32,7 @@ namespace Habtic.Games.Colr
 
         private void Update()
         {
-            if (Running)
+           if (Running)
             {
                 Tick();
                 UpdateTimeText();
@@ -42,7 +41,7 @@ namespace Habtic.Games.Colr
 
         private void OnDisable()
         {
-            TimeText.text = "00:00";
+            timerIndicator.fillAmount = 1;
         }
 
         #endregion
@@ -66,7 +65,7 @@ namespace Habtic.Games.Colr
             if (Done)
             {
                 Running = false;
-                TimeText.text = "00:00";
+				timerIndicator.fillAmount = 1;
                 GameManager.OnLevelStateChanged -= OnLevelStateChanged;
                 OnTimerFinished();
                 return;
@@ -107,7 +106,7 @@ namespace Habtic.Games.Colr
             }
         }
 
-        private void PauseTimer()
+        public void PauseTimer()
         {
             Running = false;
         }
@@ -123,48 +122,29 @@ namespace Habtic.Games.Colr
         //     OnTimerStopped();
         // }
 
-        private void UpdateTimeText()
+        public void UpdateTimeText()
         {
-            _minutes = Mathf.FloorToInt(_secondsLeft / 60);
-            if(_minutes < 0) {
-                _minutes = 0;
-            }
-            float sl = _secondsLeft % 60;
-            if (sl > 0)
-            {
-                _seconds = Mathf.FloorToInt(sl);
-            }
-            else if(sl < 0)
-            {
-                _seconds = 0;
-            }
-            else
-            {
-                _seconds = 0;
-            }
-
-            TimeText.text = _minutes.ToString("00") + ":" + ((int)_seconds).ToString("00");
+			timerIndicator.fillAmount = _secondsLeft / Duration;
         }
 
         private void ResetTimeText()
         {
-            _minutes = 0;
             _secondsLeft = 0;
-            TimeText.text = _minutes.ToString("00") + ":" + ((int)_seconds).ToString("00");
-        }
+			timerIndicator.fillAmount = _secondsLeft / Duration;
+		}
 
-        #endregion
-        #region Events
+		#endregion
+		#region Events
 
-        // private void OnTimerStopped()
-        // {
-        //     if (TimerStopped != null)
-        //     {
-        //         TimerStopped();
-        //     }
-        // }
+		// private void OnTimerStopped()
+		// {
+		//     if (TimerStopped != null)
+		//     {
+		//         TimerStopped();
+		//     }
+		// }
 
-        private void OnTimerFinished()
+		private void OnTimerFinished()
         {
             if (TimerFinished != null)
             {

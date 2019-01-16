@@ -1,0 +1,8 @@
+mouse
+cat
+keyboard
+phone
+telephone
+house
+train
+skyscraper

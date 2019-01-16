@@ -9,10 +9,6 @@ namespace Habtic.Games.Colr
     public class IntroLevelQuestion : MonoBehaviour
     {
         [SerializeField]
-        private string _qDirection = "Swipe in the direction the central fish is <color=\"red\">pointing</color>";
-        [SerializeField]
-        private string _qMove = "Swipe in the direction the central fish is <color=\"red\">moving</color>";
-        [SerializeField]
         private TMP_Text _questionText;
 
 
@@ -38,18 +34,6 @@ namespace Habtic.Games.Colr
                 default:
                     this.gameObject.SetActive(false);
                     break;
-            }
-        }
-
-        public void SetQuestionText(bool _dirOrMove)
-        {
-            if (_dirOrMove)
-            {
-                SetQuestionText(_qMove);
-            }
-            else
-            {
-                SetQuestionText(_qDirection);
             }
         }
 
