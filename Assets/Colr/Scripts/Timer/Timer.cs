@@ -11,7 +11,7 @@ namespace Habtic.Games.Colr
     public class Timer : MonoBehaviour
     {
 
-        private float _secondsLeft;
+        public float _secondsLeft;
         public Image timerIndicator;
         public event TimerEventHandler TimerFinished;
         // public event TimerEventHandler TimerStopped;
@@ -111,7 +111,7 @@ namespace Habtic.Games.Colr
             Running = false;
         }
 
-        private void ResumeTimer()
+		public void ResumeTimer()
         {
             Running = true;
         }

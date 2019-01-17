@@ -50,7 +50,8 @@ namespace Habtic.Games.Colr
         public void Continue()
         {
             GameManager.Instance.Resume();
-            _tween = LeanTween.moveY(popup, transform.position.y - 2000, 1f).setEase(LeanTweenType.easeInSine);
+            GameManager.Instance.LevelStart();
+			_tween = LeanTween.moveY(popup, transform.position.y - 2000, 1f).setEase(LeanTweenType.easeInSine);
             GameManager.Instance.disableMenu(false);
             GameManager.Instance.LevelState = LevelStates.play;
             _tween.setOnComplete(() =>

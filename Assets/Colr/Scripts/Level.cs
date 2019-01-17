@@ -34,12 +34,7 @@ namespace Habtic.Games.Colr
         }
 
         #region PROPERTIES
-        public int HorFishes { get; private set; }
-        public int VerFishes { get; private set; }
-        public int DirAndMove { get; private set; }
-        public int ScorePerFish { get; private set; }
-        public int RandomCentralFish { get; private set; }
-        public int RandomFish { get; private set; }
+        public int ScorePerCorrectAnswer { get; private set; }
         public int NextLevel { get; private set; }
         public int CorrectCounter { get; set; }
         public int TotalLifes { get; private set; }
@@ -58,54 +53,15 @@ namespace Habtic.Games.Colr
             }
         }
 
-        public bool CurrentDirOrMove
-        {
-            get
-            {
-                return _currentDirOrMove;
-            }
-            set
-            {
-                _currentDirOrMove = value;
-            }
-        }
-
         #endregion PROPERTIES
 
         private int _currentLevel = 1;
-        private bool _currentDirOrMove = false;
-        private LevelProgression _horFishProgression;
-        private LevelProgression _verFishProgression;
-        private LevelProgression _dirAndMoveProgression;
         private LevelProgression _scoreProgression;
-        private LevelProgression _randomCentralFish;
-        private LevelProgression _randomFish;
         private LevelProgression _nextLevelProgression;
         private LevelProgression _movingOutTime;
 
         private Level()
         {
-            _horFishProgression = new LevelProgression
-            {
-                Start = 0f,
-                Max = 2,
-                Increase = 0.335f
-            };
-
-            _verFishProgression = new LevelProgression
-            {
-                Start = 0.5f,
-                Max = 2,
-                Increase = 0.165f
-            };
-
-            _dirAndMoveProgression = new LevelProgression
-            {
-                Start = 0f,
-                Max = 1,
-                Increase = 0.175f
-            };
-
             _scoreProgression = new LevelProgression
             {
                 Start = 0f,
@@ -113,23 +69,10 @@ namespace Habtic.Games.Colr
                 Increase = 10f
             };
 
-            _randomCentralFish = new LevelProgression
-            {
-                Start = 0f,
-                Max = 1,
-                Increase = 0.25f
-            };
-
-            _randomFish = new LevelProgression
-            {
-                Start = 0f,
-                Max = 1,
-                Increase = 0.15f
-            };
 
             _nextLevelProgression = new LevelProgression
             {
-                Start = 5f,
+                Start = 2f,
                 Max = 15,
                 Increase = 0.8f
             };
@@ -174,12 +117,7 @@ namespace Habtic.Games.Colr
 
         private void UpdateLevelSettings(int level)
         {
-            HorFishes = CalculateLevelSetting(_horFishProgression, level);
-            VerFishes = CalculateLevelSetting(_verFishProgression, level);
-            DirAndMove = CalculateLevelSetting(_dirAndMoveProgression, level);
-            ScorePerFish = CalculateLevelSetting(_scoreProgression, level);
-            RandomCentralFish = CalculateLevelSetting(_randomCentralFish, level);
-            RandomFish = CalculateLevelSetting(_randomFish, level);
+            ScorePerCorrectAnswer = CalculateLevelSetting(_scoreProgression, level);
             NextLevel = CalculateLevelSetting(_nextLevelProgression, level);
             MovingOutTime = CalculateLevelSetting(_movingOutTime, level);
             CorrectCounter = 0;

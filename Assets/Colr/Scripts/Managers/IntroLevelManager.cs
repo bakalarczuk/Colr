@@ -221,22 +221,14 @@ namespace Habtic.Games.Colr
 
 		public void LevelStart()
 		{
-			StartTutorialOne();
-		}
-
-		public void Update()
-		{
-			if (LevelState == LevelStates.play || LevelState == LevelStates.resume)
-			{
-				_timer.Tick();
-				_timer.UpdateTimeText();
-			}
+			StartTutorialFive();
 		}
 
 		public void StartTutorialOne()
 		{
 			_timer.TimerReset();
 			_timer.StartTimer(5);
+			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialOne;
 			_timer.TimerFinished += OnTimerFinishedT1;
 			_questionPanel.SetQuestionText(TutorialOne);
@@ -274,6 +266,7 @@ namespace Habtic.Games.Colr
 		{
 			_timer.TimerReset();
 			_timer.StartTimer(5);
+			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialTwo;
 			_timer.TimerFinished += OnTimerFinishedT2;
 			_questionPanel.SetQuestionText(TutorialTwo);
@@ -311,6 +304,7 @@ namespace Habtic.Games.Colr
         {
 			_timer.TimerReset();
 			_timer.StartTimer(5);
+			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialThree;
 			_timer.TimerFinished += OnTimerFinishedT3;
 			_questionPanel.SetQuestionText(TutorialThree);
@@ -348,6 +342,7 @@ namespace Habtic.Games.Colr
 		{
 			_timer.TimerReset();
 			_timer.StartTimer(5);
+			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialFour;
 			_timer.TimerFinished += OnTimerFinishedT4;
 			_questionPanel.SetQuestionText(TutorialFour);

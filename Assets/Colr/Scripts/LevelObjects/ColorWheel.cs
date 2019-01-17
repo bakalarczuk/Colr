@@ -46,11 +46,6 @@ namespace Habtic.Games.Colr
 
 		public WheelColor[] ColorPrefabs{ get { return _colorPrefabs; } }
 
-		public void Cleanupfishes()
-        {
-
-        }
-
         public void ComeIn()
         {
             if (_tweenM != null)
@@ -64,10 +59,10 @@ namespace Habtic.Games.Colr
             transform.localPosition = Vector3.zero;
         }
 
-        public void StartNewLevel(int levelNR)
+        public void StartNewLevel(Level lvl)
         {
             ComeIn();
-			SelectColors(1);
+			SelectColors(lvl);
         }
 
         public void StartTutorialOne(int levelNR)
@@ -80,8 +75,9 @@ namespace Habtic.Games.Colr
             ComeIn();
         }
 
-		public void SelectColors(int difficultyLevel)
+		public void SelectColors(Level lvl)
 		{
+			Debug.LogError(lvl.CorrectCounter);
 			ColrColor[] myColors = new ColrColor[3];
 			List<ColrColor> unusedColors = new List<ColrColor>(_colors);
 			List<int> myNumbers = new List<int>();
@@ -113,10 +109,7 @@ namespace Habtic.Games.Colr
 			_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
 			_properColor = _generatedColors[properColorIndex];
 
-			if(difficultyLevel >= 0 && difficultyLevel < 5)
-			{
-				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
-			}
+			_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
 		}
 
 
@@ -169,8 +162,8 @@ namespace Habtic.Games.Colr
 			}
 			if (type == 4)
 			{
-				_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
-				_colorText.color = ColrColor.ColourValue(_unusedColors[Random.Range(0, _unusedColors.Length)].colorName);
+				_colorText.text = _unusedColors[Random.Range(0, _unusedColors.Length)].colorName.ToString().ToUpper();
+				_colorText.color = ColrColor.ColourValue(_properColor.colorName);
 			}
 		}
 

@@ -4,140 +4,131 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Habtic.Managers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Habtic.Games.Colr
 {
-    public class GameManager : Singleton<GameManager>
-    {
-        public delegate void LevelStateChanged(LevelStates levelState);
-        public static event LevelStateChanged OnLevelStateChanged;
+	public class GameManager : Singleton<GameManager>
+	{
+		public delegate void LevelStateChanged(LevelStates levelState);
+		public static event LevelStateChanged OnLevelStateChanged;
 
-        public LevelStates LevelState
-        {
-            get
-            {
-                return _levelState;
-            }
-            set
-            {
-                // Debug.Log("GameLevelState: " + value.ToString());
-                _levelState = value;
-                if (OnLevelStateChanged != null)
-                {
-                    OnLevelStateChanged(value);
-                }
-            }
-        }
-        private LevelStates _levelState;
+		public LevelStates LevelState {
+			get {
+				return _levelState;
+			}
+			set {
+				// Debug.Log("GameLevelState: " + value.ToString());
+				_levelState = value;
+				if (OnLevelStateChanged != null)
+				{
+					OnLevelStateChanged(value);
+				}
+			}
+		}
+		private LevelStates _levelState;
 
-        public delegate void GameSetup();
-        public static event GameStarted OnGameSetup;
+		public delegate void GameSetup();
+		public static event GameStarted OnGameSetup;
 
-        public delegate void GameStarted();
-        public static event GameStarted OnGameStarted;
+		public delegate void GameStarted();
+		public static event GameStarted OnGameStarted;
 
-        public delegate void InputChekced();
-        public static event GameStarted OnInputChecked;
-        public delegate void InputCorrect();
-        public static event GameStarted OnCorrectInput;
-        public delegate void InputIncorrect();
-        public static event GameStarted OnIncorrectInput;
+		public delegate void InputChekced();
+		public static event GameStarted OnInputChecked;
+		public delegate void InputCorrect();
+		public static event GameStarted OnCorrectInput;
+		public delegate void InputIncorrect();
+		public static event GameStarted OnIncorrectInput;
 
-        public delegate void LifesChanged(int lifes);
-        public static event LifesChanged OnLifesChanged;
+		public delegate void LifesChanged(int lifes);
+		public static event LifesChanged OnLifesChanged;
 
-        public delegate void ScoreChanged(int score, int realscore);
-        public static event ScoreChanged OnScoreChanged;
+		public delegate void ScoreChanged(int score, int realscore);
+		public static event ScoreChanged OnScoreChanged;
 
-        public delegate void MessageBroadcasted(BroadcastMessageEventArgs args);
-        public static event MessageBroadcasted OnMessageBroadcasted;
+		public delegate void MessageBroadcasted(BroadcastMessageEventArgs args);
+		public static event MessageBroadcasted OnMessageBroadcasted;
 
-        public delegate void NextLevel(NextLevelEventArgs args);
-        public static event NextLevel OnNextLevel;
+		public delegate void NextLevel(NextLevelEventArgs args);
+		public static event NextLevel OnNextLevel;
 
-        public delegate void GameOver();
-        public static event GameOver OnGameOver;
+		public delegate void GameOver();
+		public static event GameOver OnGameOver;
 
-        public delegate void PauseState(bool isPaused);
-        public static event PauseState OnPauseStateChanged;
+		public delegate void PauseState(bool isPaused);
+		public static event PauseState OnPauseStateChanged;
 
-        #region PROPERTIES
-        public Button menuButton;
-        private GameObject _selected;
+		#region PROPERTIES
+		public Button menuButton;
+		private GameObject _selected;
 
-        [SerializeField]
-        private ColorWheel _colorWheel;
-        [SerializeField]
-        private LevelQuestion _questionPanel;
-        [SerializeField]
-        private Timer _timer;					
+		[SerializeField]
+		private ColorWheel _colorWheel;
+		[SerializeField]
+		private LevelQuestion _questionPanel;
+		[SerializeField]
+		private Timer _timer;
 
-		public bool Paused
-        {
-            get
-            {
-                return _paused;
-            }
-            private set
-            {
-                _paused = value;
-                if (OnPauseStateChanged != null)
-                {
-                    OnPauseStateChanged(value);
-                }
-            }
-        }
-        public int TotalLifes { get { return _totalLifes; } set { _totalLifes = value; } }
-        public int Lifes
-        {
-            get
-            {
-                return _lifes;
-            }
-            set
-            {
-                _lifes = value;
+		public bool Paused {
+			get {
+				return _paused;
+			}
+			private set {
+				_paused = value;
+				if (OnPauseStateChanged != null)
+				{
+					OnPauseStateChanged(value);
+				}
+			}
+		}
+		public int TotalLifes { get { return _totalLifes; } set { _totalLifes = value; } }
+		public int Lifes {
+			get {
+				return _lifes;
+			}
+			set {
+				_lifes = value;
 
-                // Notify listeners
-                if (OnLifesChanged != null)
-                    OnLifesChanged(_lifes);
+				// Notify listeners
+				if (OnLifesChanged != null)
+					OnLifesChanged(_lifes);
 
-                if (_lifes <= 0)
-                {
-                    _lifes = 0;
+				if (_lifes <= 0)
+				{
+					_lifes = 0;
 
-                    DataHolder.Score = Score;
+					DataHolder.Score = Score;
 
-                    // GameOver
-                    LevelState = LevelStates.gameOver;
-                }
+					// GameOver
+					LevelState = LevelStates.gameOver;
+				}
 
-            }
-        }
-        public int Score
-        {
-            get
-            {
-                return _score;
-            }
-            set
-            {
-                int oldScore = _score;
-                _score = value;
+			}
+		}
+		public int Score {
+			get {
+				return _score;
+			}
+			set {
+				int oldScore = _score;
+				_score = value;
 
-                if (OnScoreChanged != null)
-                {
-                    OnScoreChanged(oldScore, value);
-                }
-            }
-        }
-        #endregion PROPERTIES
+				if (OnScoreChanged != null)
+				{
+					OnScoreChanged(oldScore, value);
+				}
+			}
+		}
+		#endregion PROPERTIES
 
-        private Level _level;
-        private int _totalLifes = 5;
-        private int _lifes = 5;
-        private int _score = 0;
-        private bool _paused = false;
+		public Level _level;
+		private int _totalLifes = 5;
+		private int _lifes = 5;
+		private int _score = 0;
+		private bool _paused = false;
+
+		public Timer GameTimer { get { return _timer; } set { _timer = value; } }
 
         void Awake()
         {
@@ -146,14 +137,15 @@ namespace Habtic.Games.Colr
 
         void Start()
         {
-        }
+			InputManager.Instance.OnTouchDown += OnTouchDown;
+		}
 
-        void OnEnable()
+		void OnEnable()
         {
             _timer.TimerFinished += TimerGameOver;
             OnGameSetup += Initialize;
             OnGameOver += GameOverMessage;
-            OnGameStarted += LevelStart;
+            //OnGameStarted += LevelStart;
             OnLevelStateChanged += InitLevelStateChanged;
             LevelState = LevelStates.setup;
         }
@@ -163,15 +155,16 @@ namespace Habtic.Games.Colr
             _timer.TimerFinished -= TimerGameOver;
             OnGameSetup -= Initialize;
             OnGameOver -= GameOverMessage;
-            OnGameStarted -= LevelStart;
+            //OnGameStarted -= LevelStart;
             OnLevelStateChanged -= InitLevelStateChanged;
         }
 
         void OnDestroy()
         {
-        }
+			InputManager.Instance.OnTouchDown -= OnTouchDown;
+		}
 
-        private void InitLevelStateChanged(LevelStates levelState)
+		private void InitLevelStateChanged(LevelStates levelState)
         {
             switch (levelState)
             {
@@ -219,25 +212,35 @@ namespace Habtic.Games.Colr
             TotalLifes = _level.TotalLifes;
             Lifes = _totalLifes;
             Score = 0;
-            _timer.TimerReset();
-            _timer.StartTimer(59);
-        }
+		}
 
-        private void LevelStart()
+        public void LevelStart()
         {
-            _questionPanel.SetQuestionText(_level.CurrentDirOrMove);
+            _colorWheel.StartNewLevel(_level);
 
-            _colorWheel.StartNewLevel(_level.CurrentLevel);
-        }
+			_timer.TimerReset();
+			_timer.StartTimer(5);
+			_timer.ResumeTimer();
+		}
 
-        private void OnSwipedCheck(YTouchEventArgs touchEventArgs)
-        {
-            if (LevelState == LevelStates.play || LevelState == LevelStates.resume)
-            {
-            }
-        }
+		private void OnTouchDown(YTouchEventArgs touchEventArgs)
+		{
+			if (LevelState == LevelStates.play || LevelState == LevelStates.resume)
+			{		 
+				_timer.TimerReset();
+				if (CheckColorMatchAtPosition(touchEventArgs))
+				{
+					LevelState = LevelStates.correctInput;
+				}
+				else
+				{
+					LevelState = LevelStates.IncorrectInput;
+				}
+			}
+		}
 
-        private void OnCorrectTouch()
+
+		private void OnCorrectTouch()
         {
             Debug.Log("Correct touch detected");
             if (OnCorrectInput != null)
@@ -246,8 +249,7 @@ namespace Habtic.Games.Colr
             }
             float _currentLevel = _level.CurrentLevel;
             _level.CorrectCounter = _level.CorrectCounter + 1;
-            AddScore(_level.ScorePerFish);
-
+            AddScore(_level.ScorePerCorrectAnswer);
             if (_currentLevel == _level.CurrentLevel)
             {
                 LevelState = LevelStates.play;
@@ -262,10 +264,9 @@ namespace Habtic.Games.Colr
                 OnIncorrectInput();
             }
             RemoveLife();
-            _level.CorrectCounter = 0;
+			_level.CorrectCounter = 0;
             if (Lifes > 0)
             {
-                _colorWheel.StartNewLevel(_level.CurrentLevel);
                 LevelState = LevelStates.play;
             }
         }
@@ -302,15 +303,12 @@ namespace Habtic.Games.Colr
         {
             _level.CurrentLevel++;
 
-            // Notify listeners
-            if (OnNextLevel != null)
+			// Notify listeners
+			if (OnNextLevel != null)
             {
                 OnNextLevel(new NextLevelEventArgs
                 {
-                    HorFishes = _level.HorFishes,
-                    VerFishes = _level.VerFishes,
-                    DirAndMove = _level.DirAndMove,
-                    ScorePerFish = _level.ScorePerFish,
+                    ScorePerCorrectAnswer = _level.ScorePerCorrectAnswer,
                     TotalLifes = _level.TotalLifes
                 });
             }
@@ -334,16 +332,33 @@ namespace Habtic.Games.Colr
 
         private void TimerGameOver()
         {
-            LevelState = LevelStates.gameOver;
+            LevelState = LevelStates.IncorrectInput;
         }
-    }
 
-    public class NextLevelEventArgs : EventArgs
+		private bool CheckColorMatchAtPosition(YTouchEventArgs touchEventArgs)
+		{
+			PointerEventData pointerData = new PointerEventData(EventSystem.current);
+			pointerData.position = touchEventArgs.TouchStart;
+			List<RaycastResult> results = new List<RaycastResult>();
+			EventSystem.current.RaycastAll(pointerData, results);
+			if (results.Count > 0)
+			{
+				for (int i = 0; i < _colorWheel.ColorPrefabs.Length; i++)
+				{
+					RaycastResult result = results.Find(r => r.gameObject.GetComponent<WheelColor>() == _colorWheel.ColorPrefabs[i]);
+					if (result.gameObject != null)
+						if (result.gameObject.GetComponent<WheelColor>().GetColor.Equals(_colorWheel._properColor))
+							return true;
+				}
+			}
+			return false;
+		}
+
+	}
+
+	public class NextLevelEventArgs : EventArgs
     {
-        public int HorFishes { get; set; }
-        public int VerFishes { get; set; }
-        public int DirAndMove { get; set; }
-        public int ScorePerFish { get; set; }
+        public int ScorePerCorrectAnswer { get; set; }
         public int TotalLifes { get; set; }
     }
 
