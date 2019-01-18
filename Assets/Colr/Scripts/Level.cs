@@ -38,8 +38,10 @@ namespace Habtic.Games.Colr
         public int NextLevel { get; private set; }
         public int CorrectCounter { get; set; }
         public int TotalLifes { get; private set; }
-        public int MovingOutTime { get; private set; }
-        public LevelDifficulty Difficulty { get; private set; }
+        public int TotalChallenges { get; private set; }
+        public int ChallengeCounter { get; set; }
+        public int Complexity { get; set; }
+		public LevelDifficulty Difficulty { get; private set; }
         public int CurrentLevel
         {
             get
@@ -62,32 +64,10 @@ namespace Habtic.Games.Colr
 
         private Level()
         {
-            _scoreProgression = new LevelProgression
-            {
-                Start = 0f,
-                Max = 200,
-                Increase = 10f
-            };
-
-
-            _nextLevelProgression = new LevelProgression
-            {
-                Start = 2f,
-                Max = 15,
-                Increase = 0.8f
-            };
-
-
-            _movingOutTime = new LevelProgression
-            {
-                Start = 27f,
-                Max = 4,
-                Increase = -2f
-            };
-
             TotalLifes = 5;
-
+			ChallengeCounter = 0;
             UpdateLevelSettings(_currentLevel);
+			Complexity = 1;
         }
 
         public void SetDifficulty(LevelDifficulty difficulty)
@@ -99,34 +79,31 @@ namespace Habtic.Games.Colr
                 case LevelDifficulty.EASY:
                     CurrentLevel = 1;
                     TotalLifes = 5;
+					TotalChallenges = 15;
                     break;
                 case LevelDifficulty.MEDIUM:
                     CurrentLevel = 5;
                     TotalLifes = 4;
-                    break;
+					TotalChallenges = 30;
+					break;
                 case LevelDifficulty.HARD:
                     CurrentLevel = 8;
                     TotalLifes = 3;
-                    break;
+					TotalChallenges = 60;
+					break;
                 default:
                     CurrentLevel = 1;
                     TotalLifes = 5;
-                    break;
+					TotalChallenges = 60;
+					break;
             }
         }
 
         private void UpdateLevelSettings(int level)
         {
-            ScorePerCorrectAnswer = CalculateLevelSetting(_scoreProgression, level);
-            NextLevel = CalculateLevelSetting(_nextLevelProgression, level);
-            MovingOutTime = CalculateLevelSetting(_movingOutTime, level);
+            ScorePerCorrectAnswer = 50 * level;
+            NextLevel = 5;
             CorrectCounter = 0;
-        }
-
-        private int CalculateLevelSetting(LevelProgression settings, int level)
-        {
-            float calc = settings.Start + (level * settings.Increase);
-            return Mathf.FloorToInt(Mathf.Clamp(Mathf.FloorToInt(calc), settings.Start, settings.Max));
         }
     }
 }

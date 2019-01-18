@@ -53,6 +53,9 @@ namespace Habtic.Games.Colr
 		public delegate void NextLevel(NextLevelEventArgs args);
 		public static event NextLevel OnNextLevel;
 
+		public delegate void ChallengeOver();
+		public static event ChallengeOver OnChallengeOver;
+
 		public delegate void GameOver();
 		public static event GameOver OnGameOver;
 
@@ -60,6 +63,7 @@ namespace Habtic.Games.Colr
 		public static event PauseState OnPauseStateChanged;
 
 		#region PROPERTIES
+		public Game game;
 		public Button menuButton;
 		private GameObject _selected;
 
@@ -69,6 +73,10 @@ namespace Habtic.Games.Colr
 		private LevelQuestion _questionPanel;
 		[SerializeField]
 		private Timer _timer;
+
+		private float answerTime = 5;
+
+		public float AnswerTime { get { return answerTime; } set { answerTime = value; } }
 
 		public bool Paused {
 			get {
@@ -120,6 +128,8 @@ namespace Habtic.Games.Colr
 				}
 			}
 		}
+
+		public LevelQuestion QuestionPanel { get { return _questionPanel; } }
 		#endregion PROPERTIES
 
 		public Level _level;
@@ -145,7 +155,7 @@ namespace Habtic.Games.Colr
             _timer.TimerFinished += TimerGameOver;
             OnGameSetup += Initialize;
             OnGameOver += GameOverMessage;
-            //OnGameStarted += LevelStart;
+            OnChallengeOver += ChallengeOverMessage;
             OnLevelStateChanged += InitLevelStateChanged;
             LevelState = LevelStates.setup;
         }
@@ -155,8 +165,8 @@ namespace Habtic.Games.Colr
             _timer.TimerFinished -= TimerGameOver;
             OnGameSetup -= Initialize;
             OnGameOver -= GameOverMessage;
-            //OnGameStarted -= LevelStart;
-            OnLevelStateChanged -= InitLevelStateChanged;
+            OnChallengeOver -= ChallengeOverMessage;
+			OnLevelStateChanged -= InitLevelStateChanged;
         }
 
         void OnDestroy()
@@ -181,6 +191,10 @@ namespace Habtic.Games.Colr
                 case LevelStates.gameOver:
                     if (OnGameOver != null)
                         OnGameOver();
+                    break;
+                case LevelStates.challengeend:
+                    if (OnChallengeOver != null)
+						OnChallengeOver();
                     break;
                 case LevelStates.correctInput:
                     if (OnInputChecked != null)
@@ -219,7 +233,7 @@ namespace Habtic.Games.Colr
             _colorWheel.StartNewLevel(_level);
 
 			_timer.TimerReset();
-			_timer.StartTimer(5);
+			_timer.StartTimer(answerTime);
 			_timer.ResumeTimer();
 		}
 
@@ -249,7 +263,9 @@ namespace Habtic.Games.Colr
             }
             float _currentLevel = _level.CurrentLevel;
             _level.CorrectCounter = _level.CorrectCounter + 1;
-            AddScore(_level.ScorePerCorrectAnswer);
+            _level.ChallengeCounter = _level.ChallengeCounter + 1;
+			AddScore(_level.ScorePerCorrectAnswer);
+			CheckChallege();
             if (_currentLevel == _level.CurrentLevel)
             {
                 LevelState = LevelStates.play;
@@ -265,7 +281,9 @@ namespace Habtic.Games.Colr
             }
             RemoveLife();
 			_level.CorrectCounter = 0;
-            if (Lifes > 0)
+            _level.ChallengeCounter = _level.ChallengeCounter + 1;
+			CheckChallege();
+			if (Lifes > 0)
             {
                 LevelState = LevelStates.play;
             }
@@ -287,14 +305,24 @@ namespace Habtic.Games.Colr
         {
             Score = Score + score;
 
-            if (_level.CorrectCounter >= _level.NextLevel)
+            if (_level.CorrectCounter >= _level.NextLevel && _level.ChallengeCounter < _level.TotalChallenges)
             {
                 IncreaseLevel();
             }
         }
 
 
-        public void RemoveLife()
+		public void CheckChallege()
+		{
+			Debug.LogError(_level.ChallengeCounter);
+			if (_level.ChallengeCounter >= _level.TotalChallenges)
+			{
+				LevelState = LevelStates.challengeend;
+			}
+		}
+
+
+		public void RemoveLife()
         {
             Lifes = _lifes - 1;
         }
@@ -328,6 +356,11 @@ namespace Habtic.Games.Colr
         private void GameOverMessage()
         {
             GameOverController.Instance.LoadScoreMenu();
+        }
+
+        private void ChallengeOverMessage()
+        {
+            GameOverController.Instance.LoadScoreMenu(false);
         }
 
         private void TimerGameOver()
@@ -380,6 +413,7 @@ namespace Habtic.Games.Colr
         nextLevel,
         replay,
         gameOver,
+		challengeend,
         pause,
         resume
     }

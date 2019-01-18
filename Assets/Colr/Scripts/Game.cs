@@ -20,13 +20,21 @@ namespace Habtic.Games.Colr
                 {"game_level_text_questionmoving", "Swipe in the direction the central fish is <color=\"red\">moving</color>"},
                 {"game_mainmenu_buttontext_startgame", "START GAME" },
                 {"game_mainmenu_buttontext_starttutorial", "PLAY TUTORIAL" },
+				//Notifications
                 {"game_notify_time_out", "Time out" },
                 {"game_notify_wrong_answer", "Wrong answer" },
                 {"game_notify_good", "Good answer" },
+				//Attractive messages
                 {"game_correct_answer_fast", "WOW! That was fast!" },
                 {"game_correct_answer_combo3", "Three in a row! NICE!" },
                 {"game_correct_answer_combo5", "NICE! Five in a row!" },
                 {"game_correct_answer_combo10", "You rocks! Ten in a row!" },
+				//Game over messages
+                {"game_gameover_text", "Game Over" },
+                {"game_challenge_over_text", "Challenge Over" },
+				//Instructions
+                {"game_level_instruction_printed_color", "Select <color=\"red\">color printed</color> in the center of color wheel" },
+                {"game_level_instruction_text_color","Select <color=\"red\">color of the text</color> printed in the center of color wheel" },
 			};
 
         private void Start()

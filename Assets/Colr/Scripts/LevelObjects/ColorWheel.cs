@@ -77,7 +77,6 @@ namespace Habtic.Games.Colr
 
 		public void SelectColors(Level lvl)
 		{
-			Debug.LogError(lvl.CorrectCounter);
 			ColrColor[] myColors = new ColrColor[3];
 			List<ColrColor> unusedColors = new List<ColrColor>(_colors);
 			List<int> myNumbers = new List<int>();
@@ -106,10 +105,87 @@ namespace Habtic.Games.Colr
 			}
 
 			int properColorIndex = Random.Range(0, _generatedColors.Length);
-			_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
 			_properColor = _generatedColors[properColorIndex];
 
-			_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+			if (lvl.Complexity == 1)
+			{
+				GameManager.Instance.QuestionPanel.SetQuestionText("game_level_instruction_printed_color");
+				_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
+				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+			}
+			if (lvl.Complexity == 2)
+			{
+				if (HelperMethods.CoinFlip())
+				{
+					GameManager.Instance.QuestionPanel.SetQuestionText("game_level_instruction_printed_color");
+					_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
+					_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+				}
+				else
+				{
+					GameManager.Instance.QuestionPanel.SetQuestionText("game_level_instruction_text_color");
+					_colorText.text = WordDictionary.Instance.GetShortWord();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+			}
+			if (lvl.Complexity == 3)
+			{
+				GameManager.Instance.QuestionPanel.SetQuestionText("game_level_instruction_text_color");
+				if (HelperMethods.CoinFlip())
+				{
+					_colorText.text = WordDictionary.Instance.GetShortWord();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+				else
+				{
+					_colorText.text = WordDictionary.Instance.GetLongWord();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+			}
+			if (lvl.Complexity == 4)
+			{
+				GameManager.Instance.QuestionPanel.SetQuestionText("game_level_instruction_text_color");
+				int check = Random.Range(1, 4);
+				if (check == 1)
+				{
+					_colorText.text = WordDictionary.Instance.GetShortWord();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+				else if(check == 2)
+				{
+					_colorText.text = WordDictionary.Instance.GetLongWord();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				} else if(check == 3)
+				{
+					_colorText.text = _unusedColors[Random.Range(0, _unusedColors.Length)].colorName.ToString().ToUpper();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+			}
+			if (lvl.Complexity >= 5)
+			{
+				int check = Random.Range(1, 5);
+				GameManager.Instance.QuestionPanel.SetQuestionText(check == 4 ? "game_level_instruction_printed_color" : "game_level_instruction_text_color");
+				if (check == 1)
+				{
+					_colorText.text = WordDictionary.Instance.GetShortWord();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+				else if(check == 2)
+				{
+					_colorText.text = WordDictionary.Instance.GetLongWord();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+				else if (check == 3)
+				{
+					_colorText.text = _unusedColors[Random.Range(0, _unusedColors.Length)].colorName.ToString().ToUpper();
+					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
+				}
+				else if (check == 4)
+				{
+					_colorText.text = _properColor.colorName.ToString().ToUpper();
+					_colorText.color = ColrColor.ColourValue(_unusedColors[Random.Range(0, _unusedColors.Length)].colorName);
+				}
+			}
 		}
 
 
@@ -133,6 +209,7 @@ namespace Habtic.Games.Colr
 				myNumbers.Add(randCandidate);
 				unusedColors.Remove(_colors[randCandidate]);
 				myColors[currIndex] = _colors[randCandidate];
+
 			}
 
 			_generatedColors = myColors;

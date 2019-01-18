@@ -53,7 +53,10 @@ namespace Habtic.Games.Colr
             {
                 GameManager.Instance.LevelState = LevelStates.play;
                 Popup.transform.localPosition = new Vector2(1000, 0);
-            });
+				GameManager.Instance.AnswerTime -= GameManager.Instance.AnswerTime > 3 ? 1f : GameManager.Instance.AnswerTime > 1 ? 0.5f : 0;
+				GameManager.Instance._level.Complexity += 1;
+				GameManager.Instance.LevelStart();
+			});
         }
     }
 }

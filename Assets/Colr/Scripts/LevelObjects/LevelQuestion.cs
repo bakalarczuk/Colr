@@ -10,8 +10,6 @@ namespace Habtic.Games.Colr
     {
         [SerializeField]
         Game _game;
-        private string _qDirection;
-        private string _qMove;
         [SerializeField]
         private TMP_Text _questionText;
 
@@ -19,8 +17,6 @@ namespace Habtic.Games.Colr
         void Awake()
         {
             GameManager.OnLevelStateChanged += LevelStateChanged;
-            _qDirection = _game.LocalizedStrings["game_level_text_questionfacing"];
-            _qMove = _game.LocalizedStrings["game_level_text_questionmoving"];
         }
 
         void OnDestroy()
@@ -43,18 +39,9 @@ namespace Habtic.Games.Colr
             }
         }
 
-        public void SetQuestionText(bool _dirOrMove)
+        public void SetQuestionText(string key)
         {
-            if (_dirOrMove)
-            {
-                _questionText.text = _qMove;
-            }
-            else
-            {
-                {
-                    _questionText.text = _qDirection;
-                }
-            }
+            _questionText.text = _game.LocalizedStrings[key];
         }
 
     }
