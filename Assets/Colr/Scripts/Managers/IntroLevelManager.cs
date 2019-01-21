@@ -13,7 +13,7 @@ namespace Habtic.Games.Colr
 		[SerializeField]
 		private Game _game;
 
-		private string TutorialOne, TutorialTwo, TutorialThree, TutorialFour;
+		private string TutorialPrinted, TutorialTextColor;
 
 		public delegate void LevelStateChanged(LevelStates levelState);
 		public static event LevelStateChanged OnLevelStateChanged;
@@ -137,10 +137,8 @@ namespace Habtic.Games.Colr
 		void Awake()
 		{
 			_level = Level.Instance;
-			TutorialOne = _game.LocalizedStrings["game_introlevel_text_tutorialone"];
-			TutorialTwo = _game.LocalizedStrings["game_introlevel_text_tutorialtwo"];
-			TutorialThree = _game.LocalizedStrings["game_introlevel_text_tutorialthree"];
-			TutorialFour = _game.LocalizedStrings["game_introlevel_text_tutorialfour"];
+			TutorialPrinted = _game.LocalizedStrings["game_level_instruction_printed_color"];
+			TutorialTextColor = _game.LocalizedStrings["game_level_instruction_text_color"];
 		}
 
 		void Start()
@@ -231,7 +229,7 @@ namespace Habtic.Games.Colr
 			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialOne;
 			_timer.TimerFinished += OnTimerFinishedT1;
-			_questionPanel.SetQuestionText(TutorialOne);
+			_questionPanel.SetQuestionText(TutorialPrinted);
 			_colorWheel.SelectIntroColors(1);
 		}
 
@@ -269,7 +267,7 @@ namespace Habtic.Games.Colr
 			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialTwo;
 			_timer.TimerFinished += OnTimerFinishedT2;
-			_questionPanel.SetQuestionText(TutorialTwo);
+			_questionPanel.SetQuestionText(TutorialTextColor);
 			_colorWheel.SelectIntroColors(2);
 		}
 
@@ -307,7 +305,7 @@ namespace Habtic.Games.Colr
 			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialThree;
 			_timer.TimerFinished += OnTimerFinishedT3;
-			_questionPanel.SetQuestionText(TutorialThree);
+			_questionPanel.SetQuestionText(TutorialTextColor);
 			_colorWheel.SelectIntroColors(3);
 		}
 
@@ -345,7 +343,7 @@ namespace Habtic.Games.Colr
 			_timer.ResumeTimer();
 			InputManager.Instance.OnTouchDown += OnTouchDownTutorialFour;
 			_timer.TimerFinished += OnTimerFinishedT4;
-			_questionPanel.SetQuestionText(TutorialFour);
+			_questionPanel.SetQuestionText(TutorialTextColor);
 			_colorWheel.SelectIntroColors(4);
 		}
 

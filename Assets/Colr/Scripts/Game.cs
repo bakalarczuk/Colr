@@ -10,10 +10,6 @@ namespace Habtic.Games.Colr
 
         public override Dictionary<string, string> LocalizedStrings { get; set; } = new Dictionary<string, string>()
             {
-                {"game_introlevel_text_tutorialone","Select <color=\"red\">color printed</color> in the center of color wheel" },
-                {"game_introlevel_text_tutorialtwo","Select <color=\"red\">color of the text</color> printed in the center of color wheel" },
-                {"game_introlevel_text_tutorialthree","Select <color=\"red\">color of the text</color> printed in the center of color wheel" },
-                {"game_introlevel_text_tutorialfour","Select <color=\"red\">color of the text</color> printed in the center of color wheel" },
                 {"game_flash_text_level", "LEVEL"},
                 {"game_scoremenu_text_messagenewhighscore", "NEW HIGHSCORE!"},
                 {"game_level_text_questionfacing", "Swipe in the direction the central fish is <color=\"red\">facing</color>"},

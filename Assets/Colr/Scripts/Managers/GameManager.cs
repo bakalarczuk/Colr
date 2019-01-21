@@ -314,7 +314,6 @@ namespace Habtic.Games.Colr
 
 		public void CheckChallege()
 		{
-			Debug.LogError(_level.ChallengeCounter);
 			if (_level.ChallengeCounter >= _level.TotalChallenges)
 			{
 				LevelState = LevelStates.challengeend;
