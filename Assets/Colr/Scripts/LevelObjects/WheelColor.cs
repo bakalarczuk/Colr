@@ -39,6 +39,7 @@ namespace Habtic.Games.Colr
 
         void Awake()
         {
+			colorSprite.alphaHitTestMinimumThreshold = 0.8f;
             //GameManager.OnGameSetup += SetFishOutside;
             //GameManager.OnInputChecked += SetFishOutside;
         }
