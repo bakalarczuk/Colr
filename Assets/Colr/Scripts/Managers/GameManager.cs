@@ -232,9 +232,6 @@ namespace Habtic.Games.Colr
         {
             _colorWheel.StartNewLevel(_level);
 
-			_timer.TimerReset();
-			_timer.StartTimer(answerTime);
-			_timer.ResumeTimer();
 		}
 
 		private void OnTouchDown(YTouchEventArgs touchEventArgs)

@@ -9,10 +9,22 @@ namespace Habtic.Games.Colr
 {
     public class ColorWheel : MonoBehaviour
     {
-        #region Variables and Properties
+		#region Variables and Properties
+
+		[SerializeField]
+		private GameObject _rotationHandle;
+
+		[SerializeField]
+		private float _rotationDuration;
+
+		[SerializeField]
+		private LeanTweenType _rotationEaseType;
 
 		[SerializeField]
 		private WheelColor[] _colorPrefabs;
+
+		[SerializeField]
+		private ColrColor _defaultColor;
 
 		[SerializeField]
 		public TMP_Text _colorText;
@@ -46,9 +58,16 @@ namespace Habtic.Games.Colr
 
 		public WheelColor[] ColorPrefabs{ get { return _colorPrefabs; } }
 
-        public void ComeIn()
+        public void ComeIn(Level lvl)
         {
-            if (_tweenM != null)
+			foreach (WheelColor wc in _colorPrefabs)
+			{
+				wc.SetColor(ColrColor.ColourValue(_defaultColor.colorName), _defaultColor);
+			}
+
+			_colorText.text = string.Empty;
+
+			if (_tweenM != null)
             {
                 if (LeanTween.isTweening(_tweenM.id))
                 {
@@ -57,22 +76,22 @@ namespace Habtic.Games.Colr
             }
 
             transform.localPosition = Vector3.zero;
-        }
+
+			LeanTween.rotateZ(_rotationHandle, 1080, 2).
+				setEase(_rotationEaseType)
+				.setOnComplete(() => {
+					SelectColors(lvl);
+					GameManager.Instance.GameTimer.TimerReset();
+					GameManager.Instance.GameTimer.StartTimer(GameManager.Instance.AnswerTime);
+					GameManager.Instance.GameTimer.ResumeTimer();
+
+				});
+		}
 
         public void StartNewLevel(Level lvl)
         {
-            ComeIn();
-			SelectColors(lvl);
-        }
-
-        public void StartTutorialOne(int levelNR)
-        {
-            ComeIn();
-        }
-
-        public void StartTutorialTwo(int levelNR)
-        {
-            ComeIn();
+            ComeIn(lvl);
+			//SelectColors(lvl);
         }
 
 		public void SelectColors(Level lvl)

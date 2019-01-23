@@ -219,7 +219,7 @@ namespace Habtic.Games.Colr
 
 		public void LevelStart()
 		{
-			StartTutorialOne();
+			StartTutorialFive();// One();
 		}
 
 		public void StartTutorialOne()
@@ -239,7 +239,7 @@ namespace Habtic.Games.Colr
 			{
 				_timer.TimerFinished -= OnTimerFinishedT1;
 				_timer.PauseTimer();
-				StartCoroutine(StepEndRoutine(1, "game_notify_time_out"));
+				StartCoroutine(StepEndRoutine(1, "game_notify_time_out","\n3 steps left"));
 			}
 		} 
 
@@ -251,11 +251,11 @@ namespace Habtic.Games.Colr
 				_timer.PauseTimer();
 				if (CheckColorMatchAtPosition(touchEventArgs))
 				{
-					StartCoroutine(StepEndRoutine(1, "game_notify_good"));
+					StartCoroutine(StepEndRoutine(1, "game_notify_good", "\n3 steps left"));
 				}
 				else
 				{
-					StartCoroutine(StepEndRoutine(1, "game_notify_wrong_answer"));
+					StartCoroutine(StepEndRoutine(1, "game_notify_wrong_answer", "\n3 steps left"));
 				}
 			}
 		}
@@ -277,7 +277,7 @@ namespace Habtic.Games.Colr
 			{
 				_timer.TimerFinished -= OnTimerFinishedT2;
 				_timer.PauseTimer();
-				StartCoroutine(StepEndRoutine(2, "game_notify_time_out"));
+				StartCoroutine(StepEndRoutine(2, "game_notify_time_out", "\n2 steps left"));
 			}
 		}
 
@@ -289,11 +289,11 @@ namespace Habtic.Games.Colr
 				_timer.PauseTimer();
 				if (CheckColorMatchAtPosition(touchEventArgs))
 				{
-					StartCoroutine(StepEndRoutine(2, "game_notify_good"));
+					StartCoroutine(StepEndRoutine(2, "game_notify_good", "\n2 steps left"));
 				}
 				else
 				{
-					StartCoroutine(StepEndRoutine(2, "game_notify_wrong_answer"));
+					StartCoroutine(StepEndRoutine(2, "game_notify_wrong_answer", "\n2 steps left"));
 				}
 			}
 		}
@@ -315,7 +315,7 @@ namespace Habtic.Games.Colr
 			{
 				_timer.TimerFinished -= OnTimerFinishedT3;
 				_timer.PauseTimer();
-				StartCoroutine(StepEndRoutine(3, "game_notify_time_out"));
+				StartCoroutine(StepEndRoutine(3, "game_notify_time_out", "\n1 step left"));
 			}
 		}
 
@@ -327,11 +327,11 @@ namespace Habtic.Games.Colr
 				_timer.PauseTimer();
 				if (CheckColorMatchAtPosition(touchEventArgs))
 				{
-					StartCoroutine(StepEndRoutine(3, "game_notify_good"));
+					StartCoroutine(StepEndRoutine(3, "game_notify_good", "\n1 step left"));
 				}
 				else
 				{
-					StartCoroutine(StepEndRoutine(3, "game_notify_wrong_answer"));
+					StartCoroutine(StepEndRoutine(3, "game_notify_wrong_answer", "\n1 step left"));
 				}
 			}
 		}
@@ -353,7 +353,7 @@ namespace Habtic.Games.Colr
 			{
 				_timer.TimerFinished -= OnTimerFinishedT4;
 				_timer.PauseTimer();
-				StartCoroutine(StepEndRoutine(4, "game_notify_time_out"));
+				StartCoroutine(StepEndRoutine(4, "game_notify_time_out", "\nTutorial finished"));
 			}
 		}
 
@@ -365,11 +365,11 @@ namespace Habtic.Games.Colr
 				_timer.PauseTimer();
 				if (CheckColorMatchAtPosition(touchEventArgs))
 				{
-					StartCoroutine(StepEndRoutine(4, "game_notify_good"));
+					StartCoroutine(StepEndRoutine(4, "game_notify_good", "\nTutorial finished"));
 				}
 				else
 				{
-					StartCoroutine(StepEndRoutine(4, "game_notify_wrong_answer"));
+					StartCoroutine(StepEndRoutine(4, "game_notify_wrong_answer","\nTutorial finished"));
 				}
 			}
 		}											  
@@ -411,12 +411,12 @@ namespace Habtic.Games.Colr
 			return false;
 		}
 
-		private IEnumerator StepEndRoutine(int tutorial, string notificationType)
+		private IEnumerator StepEndRoutine(int tutorial, string notificationType, string additionalText = "")
 		{
 			yield return new WaitForSeconds(0.25f);
 
 			_notifications.gameObject.SetActive(true);
-			_notifications.text = _game.LocalizedStrings[notificationType];
+			_notifications.text = _game.LocalizedStrings[notificationType]+ "<size=60%><alpha=#DD>"+additionalText;
 
 			yield return new WaitForSeconds(2f);
 			_notifications.gameObject.SetActive(false);
