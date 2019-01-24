@@ -650,6 +650,11 @@ PrefabInstance:
       propertyPath: color.colorName
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 114902093757150650, guid: af84d0a0d1980dd4d843ac76684020be,
+        type: 3}
+      propertyPath: masterColor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7014790836175112497, guid: af84d0a0d1980dd4d843ac76684020be,
         type: 3}
       propertyPath: m_fontAsset
