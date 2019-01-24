@@ -144,6 +144,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public enum TweenAction{
     MOVE_X,
@@ -1104,6 +1105,8 @@ public class LeanTween : MonoBehaviour {
         #if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
         SpriteRenderer ren = gameObject.GetComponent<SpriteRenderer>();
         lt.spriteRen = ren;
+        Image img = gameObject.GetComponent<Image>();
+        lt.image = img;
         #endif
         return lt;
     }
@@ -1195,8 +1198,10 @@ public class LeanTween : MonoBehaviour {
         #if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
         SpriteRenderer ren = gameObject.GetComponent<SpriteRenderer>();
         lt.spriteRen = ren;
-        #endif
-        return lt;
+		Image img = gameObject.GetComponent<Image>();
+		lt.image = img;
+#endif
+		return lt;
     }
 
     #if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2 && !UNITY_4_3 && !UNITY_4_5
@@ -1804,8 +1809,10 @@ public class LeanTween : MonoBehaviour {
         #if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
         SpriteRenderer ren = gameObject.GetComponent<SpriteRenderer>();
         lt.spriteRen = ren;
-        #endif
-        return lt;
+		Image img = gameObject.GetComponent<Image>();
+		lt.image = img;
+#endif
+		return lt;
     }
 
     /**

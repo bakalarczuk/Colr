@@ -50,7 +50,10 @@ namespace Habtic.Games.Colr
         void Awake()
         {
             _level = Level.Instance;
-        }
+			ToDefaultColor(0);
+			ToDefaultColor(1);
+			ToDefaultColor(2);
+		}
 
 		#endregion
 
@@ -58,14 +61,31 @@ namespace Habtic.Games.Colr
 
 		public WheelColor[] ColorPrefabs{ get { return _colorPrefabs; } }
 
-        public void ComeIn(Level lvl)
-        {
-			foreach (WheelColor wc in _colorPrefabs)
-			{
-				wc.SetColor(ColrColor.ColourValue(_defaultColor.colorName), _defaultColor);
-			}
 
-			_colorText.text = string.Empty;
+		private void ToDefaultColor(int idx)
+		{
+			_colorPrefabs[idx].SetColor(_defaultColor);
+			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_defaultColor.colorName), 1);
+		}
+
+		private void FromDefaultColor(int idx, bool releaseTimer = false)
+		{
+			_colorPrefabs[idx].SetColor(_generatedColors[idx]);
+			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_generatedColors[idx].colorName), 1)
+				.setOnComplete(() => {
+					if (releaseTimer)
+					{
+						_colorText.gameObject.SetActive(true);
+						GameManager.Instance.GameTimer.TimerReset();
+						GameManager.Instance.GameTimer.StartTimer(GameManager.Instance.AnswerTime);
+						GameManager.Instance.GameTimer.ResumeTimer();
+					}
+				});
+		}
+
+		public void ComeIn(Level lvl)
+        {
+			_colorText.gameObject.SetActive(false);
 
 			if (_tweenM != null)
             {
@@ -81,17 +101,37 @@ namespace Habtic.Games.Colr
 				setEase(_rotationEaseType)
 				.setOnComplete(() => {
 					SelectColors(lvl);
-					GameManager.Instance.GameTimer.TimerReset();
-					GameManager.Instance.GameTimer.StartTimer(GameManager.Instance.AnswerTime);
-					GameManager.Instance.GameTimer.ResumeTimer();
-
 				});
 		}
 
-        public void StartNewLevel(Level lvl)
+		public void ComeOut()
+		{
+			ToDefaultColor(0);
+			ToDefaultColor(1);
+			ToDefaultColor(2);
+
+			_colorText.gameObject.SetActive(false);
+
+			if (_tweenM != null)
+			{
+				if (LeanTween.isTweening(_tweenM.id))
+				{
+					LeanTween.cancel(_tweenM.id);
+				}
+			}
+
+			transform.localPosition = Vector3.zero;
+
+			LeanTween.rotateZ(_rotationHandle, 1080, 1).
+				setEase(_rotationEaseType)
+				.setOnComplete(() => {
+				});
+		}
+
+
+		public void StartNewLevel(Level lvl)
         {
             ComeIn(lvl);
-			//SelectColors(lvl);
         }
 
 		public void SelectColors(Level lvl)
@@ -118,10 +158,10 @@ namespace Habtic.Games.Colr
 
 			_generatedColors = myColors;
 			_unusedColors = unusedColors.ToArray();
-			for (int i = 0; i < _colorPrefabs.Length; i++)
-			{
-				_colorPrefabs[i].SetColor(ColrColor.ColourValue(_generatedColors[i].colorName), _generatedColors[i]);
-			}
+
+			FromDefaultColor(0);
+			FromDefaultColor(1);
+			FromDefaultColor(2, true);
 
 			int properColorIndex = Random.Range(0, _generatedColors.Length);
 			_properColor = _generatedColors[properColorIndex];
@@ -235,7 +275,7 @@ namespace Habtic.Games.Colr
 			_unusedColors = unusedColors.ToArray();
 			for (int i = 0; i < _colorPrefabs.Length; i++)
 			{
-				_colorPrefabs[i].SetColor(ColrColor.ColourValue(_generatedColors[i].colorName), _generatedColors[i]);
+				_colorPrefabs[i].SetIntroColor(ColrColor.ColourValue(_generatedColors[i].colorName), _generatedColors[i]);
 			}
 
 			int properColorIndex = Random.Range(0, _generatedColors.Length);

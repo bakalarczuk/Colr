@@ -77,6 +77,7 @@ namespace Habtic.Games.Colr
 		private float answerTime = 5;
 
 		public float AnswerTime { get { return answerTime; } set { answerTime = value; } }
+		public ColorWheel ColorWheel { get { return _colorWheel; } set { _colorWheel = value; } }
 
 		public bool Paused {
 			get {

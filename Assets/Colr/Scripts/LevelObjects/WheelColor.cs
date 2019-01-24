@@ -13,8 +13,7 @@ namespace Habtic.Games.Colr
         public delegate void StartDirectionChanged(SwipeDirection direction);
         public static event StartDirectionChanged OnStartDirectionChanged;
 
-		[SerializeField]
-		private Image colorSprite;
+		public Image colorSprite;
 
 		[SerializeField]
 		private ColrColor color;
@@ -54,7 +53,12 @@ namespace Habtic.Games.Colr
 		#region Methods
 
 
-		public void SetColor(Color color, ColrColor colr)
+		public void SetColor(ColrColor colr)
+        {
+			this.color = colr;
+        }
+
+		public void SetIntroColor(Color color, ColrColor colr)
         {
 			colorSprite.color = color;
 			this.color = colr;

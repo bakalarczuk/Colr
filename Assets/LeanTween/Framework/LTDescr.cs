@@ -1,6 +1,7 @@
 //namespace DentedPixel{
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 /**
 * Internal Representation of a Tween<br>
@@ -78,6 +79,7 @@ public class LTDescr
 	public delegate void ActionMethodDelegate();
 	#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
 	public SpriteRenderer spriteRen;
+	public Image image;
 	#endif
 
 	#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2 && !UNITY_4_3 && !UNITY_4_5
@@ -146,6 +148,7 @@ public class LTDescr
 		this.toggle = this.useRecursion = this.usesNormalDt = true;
 		this.trans = null;
 		this.spriteRen = null;
+		this.image = null;
 		this.passed = this.delay = this.lastVal = 0.0f;
 		this.hasUpdateCallback = this.useEstimatedTime = this.useFrames = this.hasInitiliazed = this.onCompleteOnRepeat = this.destroyOnComplete = this.onCompleteOnStart = this.useManualTime = this.hasExtraOnCompletes = false;
 		this.easeType = LeanTweenType.linear;
@@ -417,16 +420,28 @@ public class LTDescr
 
 			this.easeInternal = ()=>{
 				val = easeMethod().x;
-				#if UNITY_3_5 || UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2
+#if UNITY_3_5 || UNITY_4_0 || UNITY_4_0_1 || UNITY_4_1 || UNITY_4_2
 				alphaRecursive(this.trans, val, this.useRecursion);
-				#else
-				if(this.spriteRen!=null){
-					this.spriteRen.color = new Color( this.spriteRen.color.r, this.spriteRen.color.g, this.spriteRen.color.b, val);
+#else
+				if (this.spriteRen != null)
+				{
+					this.spriteRen.color = new Color(this.spriteRen.color.r, this.spriteRen.color.g, this.spriteRen.color.b, val);
 					alphaRecursiveSprite(this.trans, val);
-				}else{
+				}
+				else
+				{
 					alphaRecursive(this.trans, val, this.useRecursion);
 				}
-				#endif
+				if (this.image != null)
+				{
+					this.image.color = new Color(this.image.color.r, this.image.color.g, this.image.color.b, val);
+					alphaRecursiveSprite(this.trans, val);
+				}
+				else
+				{
+					alphaRecursive(this.trans, val, this.useRecursion);
+				}
+#endif
 			};
 
 		};
@@ -438,6 +453,12 @@ public class LTDescr
 			#else
 			if(this.spriteRen!=null){
 				this.spriteRen.color = new Color( this.spriteRen.color.r, this.spriteRen.color.g, this.spriteRen.color.b, val);
+				alphaRecursiveSprite(this.trans, val);
+			}else{
+				alphaRecursive(this.trans, val, this.useRecursion);
+			}
+			if(this.image!=null){
+				this.image.color = new Color( this.image.color.r, this.image.color.g, this.image.color.b, val);
 				alphaRecursiveSprite(this.trans, val);
 			}else{
 				alphaRecursive(this.trans, val, this.useRecursion);
@@ -538,6 +559,22 @@ public class LTDescr
 				#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
 			}
 				#endif
+
+			#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
+
+			if(this.image!=null){
+				this.image.color = toColor;
+				colorRecursiveSprite( trans, toColor);
+			}else{
+			#endif
+				// Debug.Log("val:"+val+" tween:"+tween+" tween.diff:"+tween.diff);
+				if(this.type==TweenAction.COLOR)
+					colorRecursive(trans, toColor, this.useRecursion);
+
+				#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
+			}
+				#endif
+
 			if(dt!=0f && this._optional.onUpdateColor!=null){
 				this._optional.onUpdateColor(toColor);
 			}else if(dt!=0f && this._optional.onUpdateColorObject!=null){
@@ -558,6 +595,20 @@ public class LTDescr
 			#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
 			if(this.spriteRen!=null){
 				this.spriteRen.color = toColor;
+				colorRecursiveSprite( trans, toColor);
+			}else{
+			#endif
+				// Debug.Log("val:"+val+" tween:"+tween+" tween.diff:"+tween.diff);
+				if(this.type==TweenAction.COLOR)
+					colorRecursive(trans, toColor, this.useRecursion);
+
+				#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
+			}
+				#endif
+
+			#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2
+			if(this.image!=null){
+				this.image.color = toColor;
 				colorRecursiveSprite( trans, toColor);
 			}else{
 			#endif

@@ -55,6 +55,7 @@ namespace Habtic.Games.Colr
         private void ShowCorrectIndicator()
         {
             StopAllTweens();
+			GameManager.Instance.ColorWheel.ComeOut();
 			_correctRandomText.text = GameManager.Instance.GameTimer._secondsLeft > 3 ? _game.LocalizedStrings["game_correct_answer_fast"] : string.Empty;
 			_correctRandomText.text = GameManager.Instance._level.CorrectCounter == 3 ? _game.LocalizedStrings["game_correct_answer_combo3"] : string.Empty;
 			_correctRandomText.text = GameManager.Instance._level.CorrectCounter == 5 ? _game.LocalizedStrings["game_correct_answer_combo5"] : string.Empty;
@@ -71,6 +72,7 @@ namespace Habtic.Games.Colr
         private void ShowIncorrectIndicator()
         {
             StopAllTweens();
+			GameManager.Instance.ColorWheel.ComeOut();
 			_tweenM = LeanTween.scale(_incorrectIndicator, Vector3.one, 1f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
