@@ -56,11 +56,10 @@ namespace Habtic.Games.Colr
         {
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
-			_correctRandomText.text = GameManager.Instance.GameTimer._secondsLeft > 3 ? _game.LocalizedStrings["game_correct_answer_fast"] : string.Empty;
-			_correctRandomText.text = GameManager.Instance._level.CorrectCounter == 3 ? _game.LocalizedStrings["game_correct_answer_combo3"] : string.Empty;
-			_correctRandomText.text = GameManager.Instance._level.CorrectCounter == 5 ? _game.LocalizedStrings["game_correct_answer_combo5"] : string.Empty;
-			_correctRandomText.text = GameManager.Instance._level.CorrectCounter == 10 ? _game.LocalizedStrings["game_correct_answer_combo10"] : string.Empty;
-            _tweenM = LeanTween.scale(_correctIndicator, Vector3.one, 1f)
+
+			_correctRandomText.text = WordDictionary.Instance.GetGoodAnswerText;
+
+			_tweenM = LeanTween.scale(_correctIndicator, Vector3.one, 1f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
                 {
@@ -73,6 +72,9 @@ namespace Habtic.Games.Colr
         {
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
+
+			_incorrectRandomText.text = WordDictionary.Instance.GetWrongAnswerText;
+
 			_tweenM = LeanTween.scale(_incorrectIndicator, Vector3.one, 1f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>

@@ -68,9 +68,10 @@ namespace Habtic.Games.Colr
 			ChallengeCounter = 0;
             UpdateLevelSettings(_currentLevel);
 			Complexity = 1;
-        }
+			TotalChallenges = 15;
+		}
 
-        public void SetDifficulty(LevelDifficulty difficulty)
+		public void SetDifficulty(LevelDifficulty difficulty)
         {
             Difficulty = difficulty;
 
@@ -94,7 +95,7 @@ namespace Habtic.Games.Colr
                 default:
                     CurrentLevel = 1;
                     TotalLifes = 5;
-					TotalChallenges = 60;
+					TotalChallenges = 15;
 					break;
             }
         }
