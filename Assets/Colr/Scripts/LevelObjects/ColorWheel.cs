@@ -95,7 +95,7 @@ namespace Habtic.Games.Colr
                 }
             }
 
-            transform.localPosition = Vector3.zero;
+            //transform.localPosition = Vector3.zero;
 
 			LeanTween.rotateZ(_rotationHandle, 1080, 1).
 				setEase(_rotationEaseType)
@@ -120,7 +120,7 @@ namespace Habtic.Games.Colr
 				}
 			}
 
-			transform.localPosition = Vector3.zero;
+			//transform.localPosition = Vector3.zero;
 
 			LeanTween.rotateZ(_rotationHandle, 1080, 1).
 				setEase(_rotationEaseType)

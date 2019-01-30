@@ -29,8 +29,8 @@ namespace Habtic.Games.Colr
                 {"game_gameover_text", "Game Over" },
                 {"game_challenge_over_text", "Challenge Over" },
 				//Instructions
-                {"game_level_instruction_printed_color", "Select <color=\"red\">color printed</color> in the center of color wheel" },
-                {"game_level_instruction_text_color","Select <color=\"red\">color of the text</color> printed in the center of color wheel" },
+                {"game_level_instruction_printed_color", "Match <color=\"red\">printed</color> color" },
+                {"game_level_instruction_text_color","Match the <color=\"red\">color</color> of the word" },
 			};
 
         private void Start()

@@ -219,7 +219,7 @@ namespace Habtic.Games.Colr
 
 		public void LevelStart()
 		{
-			StartTutorialFive();// One();
+			StartTutorialOne();// One();
 		}
 
 		public void StartTutorialOne()
