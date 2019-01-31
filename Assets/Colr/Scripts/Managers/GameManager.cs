@@ -227,12 +227,15 @@ namespace Habtic.Games.Colr
             TotalLifes = _level.TotalLifes;
             Lifes = _totalLifes;
             Score = 0;
+			_colorWheel.transform.LeanScale(new Vector3(0, 0, 0), 0);
 		}
 
-        public void LevelStart()
+		public void LevelStart()
         {
-            _colorWheel.StartNewLevel(_level);
-
+			_colorWheel.transform.LeanScale(new Vector3(1, 1, 1), 0.2f)
+				.setOnComplete(()=> {
+					_colorWheel.StartNewLevel(_level);
+				});
 		}
 
 		private void OnTouchDown(YTouchEventArgs touchEventArgs)

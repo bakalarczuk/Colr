@@ -30,7 +30,7 @@ namespace Habtic.Games.Colr
                 {"game_challenge_over_text", "Challenge Over" },
 				//Instructions
                 {"game_level_instruction_printed_color", "Match <color=\"red\">printed</color> color" },
-                {"game_level_instruction_text_color","Match the <color=\"red\">color</color> of the word" },
+                {"game_level_instruction_text_color",    "Match the <color=\"red\">color</color> of the word" },
 			};
 
         private void Start()

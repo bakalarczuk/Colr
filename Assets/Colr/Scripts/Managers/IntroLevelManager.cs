@@ -13,6 +13,9 @@ namespace Habtic.Games.Colr
 		[SerializeField]
 		private Game _game;
 
+		[SerializeField]
+		private Image _progress;
+
 		private string TutorialPrinted, TutorialTextColor;
 
 		public delegate void LevelStateChanged(LevelStates levelState);
@@ -70,8 +73,6 @@ namespace Habtic.Games.Colr
 		private IntroLevelQuestion _questionPanel;
 		[SerializeField]
 		private Timer _timer;
-		[SerializeField]
-		private TMPro.TMP_Text _notifications;
 
 		[SerializeField]
 		private MessagePanelIntro _introEndMassagePanel;
@@ -214,7 +215,8 @@ namespace Habtic.Games.Colr
 			Score = 0;
 			_introEndMassagePanel.Hide();
 			_questionPanel.Hide();
-			_notifications.gameObject.SetActive(false);
+			_progress.fillAmount = 0.25f;
+			_colorWheel.gameObject.SetActive(false);
 		}
 
 		public void LevelStart()
@@ -224,6 +226,7 @@ namespace Habtic.Games.Colr
 
 		public void StartTutorialOne()
 		{
+			_colorWheel.gameObject.SetActive(true);
 			_timer.TimerReset();
 			_timer.StartTimer(5);
 			_timer.ResumeTimer();
@@ -414,24 +417,19 @@ namespace Habtic.Games.Colr
 		private IEnumerator StepEndRoutine(int tutorial, string notificationType, string additionalText = "")
 		{
 			yield return new WaitForSeconds(0.25f);
-
-			_notifications.gameObject.SetActive(true);
-			_notifications.text = _game.LocalizedStrings[notificationType]+ "<size=60%><alpha=#DD>"+additionalText;
-
-			yield return new WaitForSeconds(2f);
-			_notifications.gameObject.SetActive(false);
-
-			yield return new WaitForSeconds(0.25f);
 			if (tutorial == 1)
 			{
+				_progress.fillAmount += 0.25f;
 				StartTutorialTwo();
 			}
 			if (tutorial == 2)
 			{
+				_progress.fillAmount += 0.25f;
 				StartTutorialThree();
 			}
 			if (tutorial == 3)
 			{
+				_progress.fillAmount += 0.25f;
 				StartTutorialFour();
 			}
 			if (tutorial == 4)

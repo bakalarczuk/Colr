@@ -273,6 +273,7 @@ namespace Habtic.Games.Colr
 
 			_generatedColors = myColors;
 			_unusedColors = unusedColors.ToArray();
+
 			for (int i = 0; i < _colorPrefabs.Length; i++)
 			{
 				_colorPrefabs[i].SetIntroColor(ColrColor.ColourValue(_generatedColors[i].colorName), _generatedColors[i]);
