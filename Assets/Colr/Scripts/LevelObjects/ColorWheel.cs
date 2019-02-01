@@ -44,15 +44,20 @@ namespace Habtic.Games.Colr
 
 		private LTDescr _tweenM;
 
+		public bool tutorialMode = false;
+
         #endregion
         #region Unity Methods
 
         void Awake()
         {
             _level = Level.Instance;
-			ToDefaultColor(0);
-			ToDefaultColor(1);
-			ToDefaultColor(2);
+			if (!tutorialMode)
+			{
+				ToDefaultColor(0);
+				ToDefaultColor(1);
+				ToDefaultColor(2);
+			}
 		}
 
 		#endregion
@@ -97,7 +102,7 @@ namespace Habtic.Games.Colr
 
             //transform.localPosition = Vector3.zero;
 
-			LeanTween.rotateZ(_rotationHandle, 1080, 1).
+			LeanTween.rotateZ(_rotationHandle, 2160, 2).
 				setEase(_rotationEaseType)
 				.setOnComplete(() => {
 					SelectColors(lvl);
@@ -122,10 +127,10 @@ namespace Habtic.Games.Colr
 
 			//transform.localPosition = Vector3.zero;
 
-			LeanTween.rotateZ(_rotationHandle, 1080, 1).
-				setEase(_rotationEaseType)
-				.setOnComplete(() => {
-				});
+			//LeanTween.rotateZ(_rotationHandle, 1080, 1).
+			//	setEase(_rotationEaseType)
+			//	.setOnComplete(() => {
+			//	});
 		}
 
 

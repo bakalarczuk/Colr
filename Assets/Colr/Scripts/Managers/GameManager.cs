@@ -64,6 +64,7 @@ namespace Habtic.Games.Colr
 
 		#region PROPERTIES
 		public Game game;
+		public Image progress;
 		public Button menuButton;
 		private GameObject _selected;
 
@@ -228,10 +229,12 @@ namespace Habtic.Games.Colr
             Lifes = _totalLifes;
             Score = 0;
 			_colorWheel.transform.LeanScale(new Vector3(0, 0, 0), 0);
+			progress.fillAmount = 0;
 		}
 
 		public void LevelStart()
         {
+			progress.fillAmount = (float)(_level.ChallengeCounter+1) / (float)_level.TotalChallenges;
 			_colorWheel.transform.LeanScale(new Vector3(1, 1, 1), 0.2f)
 				.setOnComplete(()=> {
 					_colorWheel.StartNewLevel(_level);
@@ -315,6 +318,7 @@ namespace Habtic.Games.Colr
 
 		public void CheckChallege()
 		{
+			progress.fillAmount = (float)(_level.ChallengeCounter+1) / (float)_level.TotalChallenges;
 			if (_level.ChallengeCounter >= _level.TotalChallenges)
 			{
 				LevelState = LevelStates.challengeend;
