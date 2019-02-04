@@ -74,6 +74,8 @@ namespace Habtic.Games.Colr
 		private LevelQuestion _questionPanel;
 		[SerializeField]
 		private Timer _timer;
+		[SerializeField]
+		private GameObject _rightWrongIndicator;
 
 		private float answerTime = 5;
 
@@ -229,12 +231,21 @@ namespace Habtic.Games.Colr
             Lifes = _totalLifes;
             Score = 0;
 			_colorWheel.transform.LeanScale(new Vector3(0, 0, 0), 0);
+			_rightWrongIndicator.transform.LeanScale(new Vector3(0, 0, 0), 0);
 			progress.fillAmount = 0;
 		}
 
 		public void LevelStart()
         {
 			progress.fillAmount = (float)(_level.ChallengeCounter+1) / (float)_level.TotalChallenges;
+			_rightWrongIndicator.transform.LeanScale(new Vector3(1, 1, 1), 0.2f);
+			if (!_colorWheel.tutorialMode)
+			{
+				_colorWheel.ToDefaultColor(0, 0);
+				_colorWheel.ToDefaultColor(1, 0);
+				_colorWheel.ToDefaultColor(2, 0);
+			}
+
 			_colorWheel.transform.LeanScale(new Vector3(1, 1, 1), 0.2f)
 				.setOnComplete(()=> {
 					_colorWheel.StartNewLevel(_level);
@@ -266,8 +277,10 @@ namespace Habtic.Games.Colr
                 OnCorrectInput();
             }
             float _currentLevel = _level.CurrentLevel;
-            _level.CorrectCounter = _level.CorrectCounter + 1;
+            _level.CorrectInARowCounter = _level.CorrectInARowCounter + 1;
             _level.ChallengeCounter = _level.ChallengeCounter + 1;
+			_level.CorrectCounter = _level.CorrectCounter + 1;
+
 			AddScore(_level.ScorePerCorrectAnswer);
 			CheckChallege();
             if (_currentLevel == _level.CurrentLevel)
@@ -284,7 +297,8 @@ namespace Habtic.Games.Colr
                 OnIncorrectInput();
             }
             RemoveLife();
-			_level.CorrectCounter = 0;
+			_level.CorrectInARowCounter = 0;
+			_level.IncorrectCounter = _level.IncorrectCounter + 1;
             _level.ChallengeCounter = _level.ChallengeCounter + 1;
 			CheckChallege();
 			if (Lifes > 0)
@@ -309,7 +323,7 @@ namespace Habtic.Games.Colr
         {
             Score = Score + score;
 
-            if (_level.CorrectCounter >= _level.NextLevel && _level.ChallengeCounter < _level.TotalChallenges)
+            if (_level.CorrectInARowCounter >= _level.NextLevel && _level.ChallengeCounter < _level.TotalChallenges)
             {
                 IncreaseLevel();
             }
@@ -380,12 +394,15 @@ namespace Habtic.Games.Colr
 			EventSystem.current.RaycastAll(pointerData, results);
 			if (results.Count > 0)
 			{
-				for (int i = 0; i < _colorWheel.ColorPrefabs.Length; i++)
+				if (results[0].gameObject != null)
 				{
-					RaycastResult result = results.Find(r => r.gameObject.GetComponent<WheelColor>() == _colorWheel.ColorPrefabs[i]);
-					if (result.gameObject != null)
-						if (result.gameObject.GetComponent<WheelColor>().GetColor.Equals(_colorWheel._properColor))
+					if (results[0].gameObject.GetComponent<WheelColor>() != null)
+					{
+						if (results[0].gameObject.GetComponent<WheelColor>().GetColor.Equals(_colorWheel._properColor))
+						{
 							return true;
+						}
+					}
 				}
 			}
 			return false;

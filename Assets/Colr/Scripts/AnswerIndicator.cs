@@ -18,11 +18,17 @@ namespace Habtic.Games.Colr
 		private TMP_Text _correctRandomText;
 		[SerializeField]
 		private TMP_Text _incorrectRandomText;
+		[SerializeField]
+		private TMP_Text _correctCount;
+		[SerializeField]
+		private TMP_Text _incorrectCount;
 
 		public GameObject CorrectIndicator { get { return _correctIndicator; } }
-		public GameObject IcnorrectIndicator { get { return _incorrectIndicator; } }
+		public GameObject IncorrectIndicator { get { return _incorrectIndicator; } }
 		public TMP_Text CorrectText { get { return _correctRandomText; } set { _correctRandomText = value; } }
 		public TMP_Text IncorrectText { get { return _incorrectRandomText; } set { _incorrectRandomText = value; } }
+		public TMP_Text CorrectCount { get { return _correctCount; } set { _correctCount = value; } }
+		public TMP_Text IncorrectCount { get { return _incorrectCount; } set { _incorrectCount = value; } }
 
 		private LTDescr _tweenM;
 
@@ -36,6 +42,12 @@ namespace Habtic.Games.Colr
 
 			_correctRandomText.text = string.Empty;
 			_incorrectRandomText.text = string.Empty;
+
+			if(_correctCount != null)
+				_correctCount.text = "0";
+
+			if(_incorrectCount != null)
+				_incorrectCount.text = "0";
         }
 
         private void OnDestroy()
@@ -61,7 +73,6 @@ namespace Habtic.Games.Colr
         {
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
-
 			_correctRandomText.text = WordDictionary.Instance.GetGoodAnswerText;
 
 			_tweenM = LeanTween.scale(_correctIndicator, Vector3.one, 1f)
@@ -69,6 +80,7 @@ namespace Habtic.Games.Colr
                 .setOnComplete(() =>
                 {
                     _correctIndicator.transform.localScale = Vector3.zero;
+					_correctCount.text = GameManager.Instance._level.CorrectCounter.ToString();
 					GameManager.Instance.LevelStart();
                 });
         }
@@ -77,7 +89,6 @@ namespace Habtic.Games.Colr
         {
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
-
 			_incorrectRandomText.text = WordDictionary.Instance.GetWrongAnswerText;
 
 			_tweenM = LeanTween.scale(_incorrectIndicator, Vector3.one, 1f)
@@ -85,6 +96,7 @@ namespace Habtic.Games.Colr
                 .setOnComplete(() =>
                 {
                     _incorrectIndicator.transform.localScale = Vector3.zero;
+					_incorrectCount.text = GameManager.Instance._level.IncorrectCounter.ToString();
 					GameManager.Instance.LevelStart();
 				});
         }

@@ -33,11 +33,13 @@ namespace Habtic.Games.Colr
             }
         }
 
-        #region PROPERTIES
-        public int ScorePerCorrectAnswer { get; private set; }
+		#region PROPERTIES
+		public int ScorePerCorrectAnswer { get; private set; }
         public int NextLevel { get; private set; }
-        public int CorrectCounter { get; set; }
-        public int TotalLifes { get; private set; }
+        public int CorrectInARowCounter { get; set; }
+		public int CorrectCounter { get; set; } = 0;
+		public int IncorrectCounter { get; set; } = 0;
+		public int TotalLifes { get; private set; }
         public int TotalChallenges { get; private set; }
         public int ChallengeCounter { get; set; }
         public int Complexity { get; set; }
@@ -69,6 +71,8 @@ namespace Habtic.Games.Colr
             UpdateLevelSettings(_currentLevel);
 			Complexity = 1;
 			TotalChallenges = 15;
+			CorrectCounter = 0;
+			IncorrectCounter = 0;
 		}
 
 		public void SetDifficulty(LevelDifficulty difficulty)
@@ -104,7 +108,7 @@ namespace Habtic.Games.Colr
         {
             ScorePerCorrectAnswer = 50 * level;
             NextLevel = 5;
-            CorrectCounter = 0;
+			CorrectInARowCounter = 0;
         }
     }
 }

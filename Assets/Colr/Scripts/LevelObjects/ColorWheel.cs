@@ -52,12 +52,6 @@ namespace Habtic.Games.Colr
         void Awake()
         {
             _level = Level.Instance;
-			if (!tutorialMode)
-			{
-				ToDefaultColor(0);
-				ToDefaultColor(1);
-				ToDefaultColor(2);
-			}
 		}
 
 		#endregion
@@ -67,10 +61,10 @@ namespace Habtic.Games.Colr
 		public WheelColor[] ColorPrefabs{ get { return _colorPrefabs; } }
 
 
-		private void ToDefaultColor(int idx)
+		public void ToDefaultColor(int idx, float time = 1)
 		{
 			_colorPrefabs[idx].SetColor(_defaultColor);
-			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_defaultColor.colorName), 1);
+			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_defaultColor.colorName), (time != 1 ? time : 1));
 		}
 
 		private void FromDefaultColor(int idx, bool releaseTimer = false)
@@ -136,7 +130,7 @@ namespace Habtic.Games.Colr
 
 		public void StartNewLevel(Level lvl)
         {
-            ComeIn(lvl);
+			ComeIn(lvl);
         }
 
 		public void SelectColors(Level lvl)
