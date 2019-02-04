@@ -19,6 +19,11 @@ namespace Habtic.Games.Colr
 		[SerializeField]
 		private TMP_Text _incorrectRandomText;
 
+		public GameObject CorrectIndicator { get { return _correctIndicator; } }
+		public GameObject IcnorrectIndicator { get { return _incorrectIndicator; } }
+		public TMP_Text CorrectText { get { return _correctRandomText; } set { _correctRandomText = value; } }
+		public TMP_Text IncorrectText { get { return _incorrectRandomText; } set { _incorrectRandomText = value; } }
+
 		private LTDescr _tweenM;
 
         private void Awake()
