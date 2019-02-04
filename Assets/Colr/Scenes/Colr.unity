@@ -28870,7 +28870,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Match printed word
+  m_text: Match the color of the word
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d33de823326a7435ab180053a210ade7, type: 2}
   m_sharedMaterial: {fileID: 21030357818979336, guid: d33de823326a7435ab180053a210ade7,
@@ -28940,10 +28940,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 9044993336408481076}
-    characterCount: 18
+    characterCount: 27
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 5
+    wordCount: 6
     linkCount: 0
     lineCount: 1
     pageCount: 1
