@@ -244,7 +244,7 @@ namespace Habtic.Games.Colr
 			incorrectCount = 0;
 			_notifications.CorrectCount.text = correctCount.ToString();
 			_notifications.IncorrectCount.text = incorrectCount.ToString();
-			StartTutorialOne();// One();
+			StartTutorialFive();// One();
 		}
 
 		public void StartTutorialOne()

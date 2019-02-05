@@ -7,12 +7,12 @@ using TMPro;
 
 namespace Habtic.Games.Colr
 {
-    public class ColorWheel : MonoBehaviour
-    {
+	public class ColorWheel : MonoBehaviour
+	{
 		#region Variables and Properties
 
 		[SerializeField]
-		private GameObject _rotationHandle;
+		private GameObject[] _rotationHandles;
 
 		[SerializeField]
 		private float _rotationDuration;
@@ -37,8 +37,8 @@ namespace Habtic.Games.Colr
 
 		[SerializeField]
 		private ColrColor[] _unusedColors;
- 
-		public ColrColor _properColor;	
+
+		public ColrColor _properColor;
 
 		private Level _level;
 
@@ -46,19 +46,19 @@ namespace Habtic.Games.Colr
 
 		public bool tutorialMode = false;
 
-        #endregion
-        #region Unity Methods
+		#endregion
+		#region Unity Methods
 
-        void Awake()
-        {
-            _level = Level.Instance;
+		void Awake()
+		{
+			_level = Level.Instance;
 		}
 
 		#endregion
 
 		#region Methods
 
-		public WheelColor[] ColorPrefabs{ get { return _colorPrefabs; } }
+		public WheelColor[] ColorPrefabs { get { return _colorPrefabs; } }
 
 
 		public void ToDefaultColor(int idx, float time = 1)
@@ -70,7 +70,7 @@ namespace Habtic.Games.Colr
 		private void FromDefaultColor(int idx, bool releaseTimer = false)
 		{
 			_colorPrefabs[idx].SetColor(_generatedColors[idx]);
-			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_generatedColors[idx].colorName), 1)
+			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_generatedColors[idx].colorName), 2)
 				.setOnComplete(() => {
 					if (releaseTimer)
 					{
@@ -83,23 +83,32 @@ namespace Habtic.Games.Colr
 		}
 
 		public void ComeIn(Level lvl)
-        {
+		{
 			_colorText.gameObject.SetActive(false);
 
 			if (_tweenM != null)
-            {
-                if (LeanTween.isTweening(_tweenM.id))
-                {
-                    LeanTween.cancel(_tweenM.id);
-                }
-            }
+			{
+				if (LeanTween.isTweening(_tweenM.id))
+				{
+					LeanTween.cancel(_tweenM.id);
+				}
+			}
 
-            //transform.localPosition = Vector3.zero;
+			SelectColors(lvl);
 
-			LeanTween.rotateZ(_rotationHandle, 2160, 2).
+			LeanTween.rotateZ(_rotationHandles[0], 1080, 2).
 				setEase(_rotationEaseType)
 				.setOnComplete(() => {
-					SelectColors(lvl);
+				});
+
+			LeanTween.rotateZ(_rotationHandles[1], 2160, 2).
+				setEase(_rotationEaseType)
+				.setOnComplete(() => {
+				});
+
+			LeanTween.rotateZ(_rotationHandles[2], -1080, 2).
+				setEase(_rotationEaseType)
+				.setOnComplete(() => {
 				});
 		}
 
@@ -129,9 +138,9 @@ namespace Habtic.Games.Colr
 
 
 		public void StartNewLevel(Level lvl)
-        {
+		{
 			ComeIn(lvl);
-        }
+		}
 
 		public void SelectColors(Level lvl)
 		{
@@ -209,11 +218,12 @@ namespace Habtic.Games.Colr
 					_colorText.text = WordDictionary.Instance.GetShortWord();
 					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
 				}
-				else if(check == 2)
+				else if (check == 2)
 				{
 					_colorText.text = WordDictionary.Instance.GetLongWord();
 					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
-				} else if(check == 3)
+				}
+				else if (check == 3)
 				{
 					_colorText.text = _unusedColors[Random.Range(0, _unusedColors.Length)].colorName.ToString().ToUpper();
 					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
@@ -228,7 +238,7 @@ namespace Habtic.Games.Colr
 					_colorText.text = WordDictionary.Instance.GetShortWord();
 					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
 				}
-				else if(check == 2)
+				else if (check == 2)
 				{
 					_colorText.text = WordDictionary.Instance.GetLongWord();
 					_colorText.color = ColrColor.ColourValue(_properColor.colorName);
