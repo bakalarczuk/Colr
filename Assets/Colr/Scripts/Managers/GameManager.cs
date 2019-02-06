@@ -406,8 +406,7 @@ namespace Habtic.Games.Colr
 				}
 			}
 			return false;
-		}
-
+		}	  
 	}
 
 	public class NextLevelEventArgs : EventArgs

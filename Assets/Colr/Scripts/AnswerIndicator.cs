@@ -22,6 +22,8 @@ namespace Habtic.Games.Colr
 		private TMP_Text _correctCount;
 		[SerializeField]
 		private TMP_Text _incorrectCount;
+		[SerializeField]
+		private ParticleSystem _colorWheelBlast;
 
 		public GameObject CorrectIndicator { get { return _correctIndicator; } }
 		public GameObject IncorrectIndicator { get { return _incorrectIndicator; } }
@@ -37,7 +39,9 @@ namespace Habtic.Games.Colr
             GameManager.OnLevelStateChanged += ShowAnswerIndicator;
             GameManager.OnCorrectInput += ShowCorrectIndicator;
             GameManager.OnIncorrectInput += ShowIncorrectIndicator;
-            _correctIndicator.transform.localScale = Vector3.zero;
+			if (_colorWheelBlast)
+				_colorWheelBlast.Stop();
+			_correctIndicator.transform.localScale = Vector3.zero;
             _incorrectIndicator.transform.localScale = Vector3.zero;
 
 			_correctRandomText.text = string.Empty;
@@ -74,30 +78,32 @@ namespace Habtic.Games.Colr
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
 			_correctRandomText.text = WordDictionary.Instance.GetGoodAnswerText;
-
-			_tweenM = LeanTween.scale(_correctIndicator, Vector3.one, 1f)
+			if (_colorWheelBlast)
+				_colorWheelBlast.Play();
+			_tweenM = LeanTween.scale(_correctIndicator, Vector3.one, 0.5f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
                 {
-                    _correctIndicator.transform.localScale = Vector3.zero;
 					_correctCount.text = GameManager.Instance._level.CorrectCounter.ToString();
-					GameManager.Instance.LevelStart();
+					if(this.gameObject.activeSelf)
+						CoroutineHandler.Instance.StartCoroutine(CoroutineHandler.Instance.HideIndicator(_correctIndicator));
                 });
         }
 
-        private void ShowIncorrectIndicator()
+		private void ShowIncorrectIndicator()
         {
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
 			_incorrectRandomText.text = WordDictionary.Instance.GetWrongAnswerText;
-
+			if (_colorWheelBlast)
+				_colorWheelBlast.Play();
 			_tweenM = LeanTween.scale(_incorrectIndicator, Vector3.one, 1f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
                 {
-                    _incorrectIndicator.transform.localScale = Vector3.zero;
 					_incorrectCount.text = GameManager.Instance._level.IncorrectCounter.ToString();
-					GameManager.Instance.LevelStart();
+					if(this.gameObject.activeSelf)
+						CoroutineHandler.Instance.StartCoroutine(CoroutineHandler.Instance.HideIndicator(_incorrectIndicator));
 				});
         }
 
