@@ -107,6 +107,16 @@ namespace Habtic.Games.Colr
 				});
         }
 
+        public void ManualBlastStart(){
+			if (_colorWheelBlast)
+				_colorWheelBlast.Play();
+        }
+
+        public void ManualBlastStop(){
+			if (_colorWheelBlast)
+				_colorWheelBlast.Stop();
+        }
+
         private void StopAllTweens()
         {
             if (_tweenM != null)

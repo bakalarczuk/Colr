@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Habtic.Managers;
@@ -70,7 +71,7 @@ namespace Habtic.Games.Colr
 		private void FromDefaultColor(int idx, bool releaseTimer = false)
 		{
 			_colorPrefabs[idx].SetColor(_generatedColors[idx]);
-			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_generatedColors[idx].colorName), 2)
+			LeanTween.value(_colorPrefabs[idx].gameObject, _colorPrefabs[idx].colorSprite.color, ColrColor.ColourValue(_generatedColors[idx].colorName), 1)
 				.setOnComplete(() => {
 					if (releaseTimer)
 					{
@@ -95,18 +96,38 @@ namespace Habtic.Games.Colr
 			}
 
 			SelectColors(lvl);
+			RotateWheel();
+		}
 
-			LeanTween.rotateZ(_rotationHandles[0], 1080, 2).
+		public void ComeInIntro(int type)
+		{
+			_colorText.gameObject.SetActive(false);
+
+			if (_tweenM != null)
+			{
+				if (LeanTween.isTweening(_tweenM.id))
+				{
+					LeanTween.cancel(_tweenM.id);
+				}
+			}
+
+			SelectIntroColors(type);
+			RotateWheel();
+		}
+
+		private void RotateWheel(){
+
+			LeanTween.rotateZ(_rotationHandles[0], 1080, 0.6f).
 				setEase(_rotationEaseType)
 				.setOnComplete(() => {
 				});
 
-			LeanTween.rotateZ(_rotationHandles[1], 2160, 2).
+			LeanTween.rotateZ(_rotationHandles[1], 2160, 1).
 				setEase(_rotationEaseType)
 				.setOnComplete(() => {
 				});
 
-			LeanTween.rotateZ(_rotationHandles[2], -1080, 2).
+			LeanTween.rotateZ(_rotationHandles[2], -1080, 0.8f).
 				setEase(_rotationEaseType)
 				.setOnComplete(() => {
 				});
@@ -178,7 +199,7 @@ namespace Habtic.Games.Colr
 			{
 				GameManager.Instance.QuestionPanel.SetQuestionText("game_level_instruction_printed_color");
 				_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
-				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.White);
 			}
 			if (lvl.Complexity == 2)
 			{
@@ -186,7 +207,7 @@ namespace Habtic.Games.Colr
 				{
 					GameManager.Instance.QuestionPanel.SetQuestionText("game_level_instruction_printed_color");
 					_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
-					_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+					_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.White);
 				}
 				else
 				{
@@ -283,6 +304,11 @@ namespace Habtic.Games.Colr
 			_generatedColors = myColors;
 			_unusedColors = unusedColors.ToArray();
 
+		
+			FromDefaultColor(0);
+			FromDefaultColor(1);
+			FromDefaultColor(2, true);
+
 			for (int i = 0; i < _colorPrefabs.Length; i++)
 			{
 				_colorPrefabs[i].SetIntroColor(ColrColor.ColourValue(_generatedColors[i].colorName), _generatedColors[i]);
@@ -294,7 +320,7 @@ namespace Habtic.Games.Colr
 			if (type == 1)
 			{
 				_colorText.text = _generatedColors[properColorIndex].colorName.ToString().ToUpper();
-				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.Black);
+				_colorText.color = ColrColor.ColourValue(ColrColor.ColorNames.White);
 			}
 			if (type == 2)
 			{
