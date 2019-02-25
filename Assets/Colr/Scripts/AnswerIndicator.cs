@@ -78,13 +78,13 @@ namespace Habtic.Games.Colr
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
 			_correctRandomText.text = WordDictionary.Instance.GetGoodAnswerText;
+			_correctCount.text = GameManager.Instance._level.CorrectCounter.ToString();
 			if (_colorWheelBlast)
 				_colorWheelBlast.Play();
 			_tweenM = LeanTween.scale(_correctIndicator, Vector3.one, 0.5f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
                 {
-					_correctCount.text = GameManager.Instance._level.CorrectCounter.ToString();
 					if(this.gameObject.activeSelf)
 						CoroutineHandler.Instance.StartCoroutine(CoroutineHandler.Instance.HideIndicator(_correctIndicator));
                 });
@@ -95,13 +95,13 @@ namespace Habtic.Games.Colr
             StopAllTweens();
 			GameManager.Instance.ColorWheel.ComeOut();
 			_incorrectRandomText.text = WordDictionary.Instance.GetWrongAnswerText;
+			_incorrectCount.text = GameManager.Instance._level.IncorrectCounter.ToString();
 			if (_colorWheelBlast)
 				_colorWheelBlast.Play();
 			_tweenM = LeanTween.scale(_incorrectIndicator, Vector3.one, 1f)
                 .setEase(LeanTweenType.easeInOutSine)
                 .setOnComplete(() =>
                 {
-					_incorrectCount.text = GameManager.Instance._level.IncorrectCounter.ToString();
 					if(this.gameObject.activeSelf)
 						CoroutineHandler.Instance.StartCoroutine(CoroutineHandler.Instance.HideIndicator(_incorrectIndicator));
 				});

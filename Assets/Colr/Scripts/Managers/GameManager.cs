@@ -277,11 +277,11 @@ namespace Habtic.Games.Colr
                 OnCorrectInput();
             }
             float _currentLevel = _level.CurrentLevel;
+			AddScore(_level.ScorePerCorrectAnswer);
             _level.CorrectInARowCounter = _level.CorrectInARowCounter + 1;
             _level.ChallengeCounter = _level.ChallengeCounter + 1;
 			_level.CorrectCounter = _level.CorrectCounter + 1;
 
-			AddScore(_level.ScorePerCorrectAnswer);
 			CheckChallege();
             if (_currentLevel == _level.CurrentLevel)
             {
