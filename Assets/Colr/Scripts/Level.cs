@@ -107,7 +107,7 @@ namespace Habtic.Games.Colr
         private void UpdateLevelSettings(int level)
         {
             ScorePerCorrectAnswer = 50 * level;
-            NextLevel = 5;
+            NextLevel = 3;
 			CorrectInARowCounter = 0;
         }
     }
